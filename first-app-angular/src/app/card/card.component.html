@@ -1,0 +1,21 @@
+<div class="card">
+  <h2 [ngStyle]="{
+    color: title.length < 5 ? 'blue' : 'red'
+  }">{{title}}</h2>
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias id animi assumenda neque nisi! Provident vel
+    molestiae
+    esse eligendi perferendis quos laboriosam sequi voluptatem, suscipit velit ipsa culpa tenetur sapiente.</p>
+  <span>{{arr}}</span>
+  <hr>
+  <em>{{obj['name']}}</em>
+  <hr>
+  <em>{{obj | json}}</em>
+  <hr>
+  <p>{{getInfo()}}</p>
+  <hr>
+  <img [src]="imgUrl" alt="Turkish cats">
+  <hr>
+  <button (click)="changeText()" [disabled]="btnDisabled">{{btnText}}</button>
+  <hr>
+  <input (input)="changeText2($event)" [value]='title' type="text">
+</div>
