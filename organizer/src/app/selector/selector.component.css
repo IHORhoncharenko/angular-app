@@ -1,0 +1,14 @@
+.date-choice{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+time{
+  margin: 0 2rem;
+text-align: center;
+width: 200px;
+}
+svg{
+  cursor: pointer;
+}

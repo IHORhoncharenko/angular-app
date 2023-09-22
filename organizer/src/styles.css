@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  background: #fff;
+  color: #333;
+}
+ul{
+  list-style: none;
+}
+input{
+  display: block;
+  width: 100%;
+  padding: .4rem;
+  font-size: 1.2rem;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: .5rem;
+}
+.container{
+  max-width: 1100px;
+  margin: auto;
+  overflow: hidden;
+  padding: 0 2rem;
+}
+table th{
+  background: var(--light-color);
+}
+.btn{
+  display: inline-block;
+  background: var(--light-color);
+  color: #333;
+  padding: .4rem 1.3rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: opacity .2s;
+  outline: none;
+}
+.btn :disabled{
+  background: var(--light-color);
+  color: #fff;
+  cursor: not-allowed;
+}
