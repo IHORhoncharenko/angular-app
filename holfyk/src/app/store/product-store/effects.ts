@@ -3,45 +3,47 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, filter, map, retry, switchMap, tap } from 'rxjs/operators';
 import * as storeActions from './actions';
+import { ProductService } from '../../services/product-services/product-services.service';
 
 @Injectable()
 export class ProductEffects {
-  // loadFavoriteListMovies$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(storeActions.load),
-  //     filter((action) => action.accountID !== null),
-  //     switchMap((action) => {
-  //       return this.moviesService
-  //         .getFavoriteMovies(action.accountID, action.sessionID)
-  //         .pipe(
-  //           tap(() => {
-  //             console.log(
-  //               `%c Get favorite movies ...`,
-  //               `color: red; font-weight: 700`
-  //             );
-  //           }),
-  //           retry(8),
-  //           map((data) => {
-  //             console.log(`[data] >>> loadFavoriteListMovies$`, data);
-  //             console.log(
-  //               `%c favoriteListMovies >>>`,
-  //               `color: green; font-weight: 700`,
-  //               data.results
-  //             );
-  //             return storeActions.loadFavoriteListMoviesSuccess({
-  //               favoriteMovies: data.results,
-  //             });
-  //           }),
-  //           catchError((error) =>
-  //             of(
-  //               storeActions.loadMoviesFailure({
-  //                 error,
-  //               })
-  //             )
-  //           )
-  //         );
-  //     })
-  //   )
-  // );
-  constructor(private actions$: Actions) {}
+  products$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(storeActions.load),
+      switchMap(() => {
+        return this.productService.getAllProducts().pipe(
+          tap(() => {
+            console.log(
+              `%c Get all products ...`,
+              `color: red; font-weight: 700`
+            );
+          }),
+          retry(8),
+          map((data) => {
+            console.log(
+              `%c allProducts >>> success`,
+              `color: green; font-weight: 700`,
+              data
+            );
+            return storeActions.loadSuccess({
+              allProducts: data,
+            });
+          }),
+
+          catchError((error) =>
+            of(
+              storeActions.actionFailure({
+                error,
+              })
+            )
+          )
+        );
+      })
+    )
+  );
+
+  constructor(
+    private actions$: Actions,
+    private productService: ProductService
+  ) {}
 }

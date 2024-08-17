@@ -1,32 +1,20 @@
 import { createReducer, on } from '@ngrx/store';
-import * as productActions from './actions';
+import * as storeActions from './actions';
 import { initialState } from './state';
 
 export const ProductReducer = createReducer(
   initialState,
-  on(productActions.load, (state) => ({
-    ...state,
-    isLoading: true,
-    error: null,
-  })),
-  on(productActions.searchProducts, (state) => ({
-    ...state,
-    isLoading: true,
-    error: null,
-  })),
-  on(productActions.updateTotal, (state, { total }) => {
-    return { ...state, total };
-  }),
-
-  on(productActions.actionFailure, (state, { error }) => ({
-    ...state,
-    isLoading: false,
-    error,
-  })),
-  on(productActions.select, (state, { selectedProductId }) => {
+  on(storeActions.actionFailure, (state, { error }) => {
     return {
       ...state,
-      selectedProductId,
+      reviews: null,
+      error: error,
+    };
+  }),
+  on(storeActions.loadSuccess, (state, { allProducts }) => {
+    return {
+      ...state,
+      allProducts: allProducts,
     };
   })
 );

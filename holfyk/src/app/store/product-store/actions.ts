@@ -43,7 +43,7 @@ export const updateTotal = createAction(
 
 export const loadSuccess = createAction(
   ProductActionType.LoadSuccess,
-  props<{ products: Product[] }>()
+  props<{ allProducts: any }>()
 );
 
 export const submitSuccess = createAction(

@@ -6,15 +6,18 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { ProductReducer } from './store/product-store/reducer';
+import { provideHttpClient } from '@angular/common/http';
+import { ProductEffects } from './store/product-store/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     provideRouter(routes),
     provideClientHydration(),
     provideStore({
       productState: ProductReducer,
     }),
-    provideEffects(),
+    provideEffects([ProductEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
