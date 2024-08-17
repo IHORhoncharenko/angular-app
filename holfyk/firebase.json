@@ -1,0 +1,15 @@
+{
+  "database": {
+    "rules": "n"
+  },
+  "hosting": {
+    "public": "dist/holfyk/browser",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
