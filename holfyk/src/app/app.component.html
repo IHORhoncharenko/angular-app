@@ -1,17 +1,37 @@
 <header>
   <h1>Holfyk in UA</h1>
+  <p-sidebar [(visible)]="sidebarVisible">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center gap-2">
+        <p-avatar
+          image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+          shape="circle"
+        />
+        <span class="font-bold"> Amy Elsner </span>
+      </div>
+    </ng-template>
+    <p>Lorem ipsum dolor sit amet...</p>
+  </p-sidebar>
+  <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
 </header>
 
 <div class="main">
-  <ul class="main__product-list">
-    @for (product of allProducts; track product.id) {
-    <li>
-      <app-product-card-preview
-        [productData]="product"
-      ></app-product-card-preview>
-    </li>
-    }
-  </ul>
+  @if(!isShowHomePageSection){
+  <router-outlet></router-outlet>
+  }@else {
+  <section>
+    <ul class="main__product-list">
+      @for (product of allProducts; track product.id) {
+      <li>
+        <app-product-card-preview
+          [productData]="product"
+        ></app-product-card-preview>
+      </li>
+      }
+    </ul>
+  </section>
+
+  }
 </div>
 
 <footer>

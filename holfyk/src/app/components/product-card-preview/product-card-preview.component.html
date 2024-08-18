@@ -3,6 +3,8 @@
   <p-card>
     <ng-template pTemplate="header">
       <img
+        (click)="openCard(productData.id!)"
+        routerLinkActive="router-link-active"
         fetchpriority="high"
         class="product-image"
         itemprop="image"
@@ -10,7 +12,9 @@
         src="{{ productData.image }}"
       />
     </ng-template>
-    <h2 class="p-card-title" itemprop="name">{{ productData.title }}</h2>
+    <h2 class="p-card-title" itemprop="name">
+      {{ productData.title }}
+    </h2>
     <div
       class="product-rating"
       itemprop="aggregateRating"
@@ -19,17 +23,19 @@
     >
       <form [formGroup]="ratingGroup">
         <p-rating formControlName="value" [cancel]="false" [readonly]="true" />
+        <div class="product-rating__additional-info">
+          <small itemprop="ratingValue">{{ productData.rating?.rate }}</small>
+          of
+          <small itemprop="reviewCount">{{ productData.rating?.count }}</small>
+          reviews
+        </div>
       </form>
-      <div class="product-rating__additional-info">
-        <small itemprop="ratingValue">{{ productData.rating?.rate }}</small>
-        of
-        <small itemprop="reviewCount">{{ productData.rating?.count }}</small>
-        reviews
-      </div>
 
-      <span class="p-card-subtitle">sku: {{ productData.id }}</span>
-    </div>
-    <ng-template pTemplate="footer">
+      <div class="product-rating__category">
+        <span>{{ productData.category }}</span>
+        <span class="p-card-subtitle">sku: {{ productData.id }}</span>
+      </div>
+      <p>In stock <span class="pi pi-truck"></span></p>
       <div class="price">
         <data value="{{ productData.price }}">
           <span>
@@ -37,7 +43,15 @@
             <data class="currency-symbol" value="UAH">₴</data>
           </span>
         </data>
-        <mat-icon>add_shopping_cart</mat-icon>
+        <span class="pi pi-shopping-cart price__icon"></span>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="tags">
+        @for (tag of selectedTag; track $index) {
+        <p-tag [value]="tag" />
+        }
       </div>
     </ng-template>
   </p-card>

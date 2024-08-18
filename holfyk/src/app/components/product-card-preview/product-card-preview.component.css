@@ -24,7 +24,7 @@
   visibility: hidden;
 }
 
-.product-rating:hover .product-rating__additional-info {
+form:hover .product-rating__additional-info {
   visibility: visible
 }
 
@@ -50,4 +50,25 @@
   font-weight: normal;
   margin-left: 5px;
   color: #777;
+}
+
+.price__icon {
+  font-size: 1em;
+}
+
+.product-rating__category {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+::ng-deep .p-card-footer {
+  padding: 0px;
 }

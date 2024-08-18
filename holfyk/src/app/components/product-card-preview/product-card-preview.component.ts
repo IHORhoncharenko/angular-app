@@ -7,13 +7,13 @@ import {
 } from '@angular/core';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
-import { selectAllProducts } from '../../store/product-store/selectors';
-import { filter } from 'rxjs';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RatingModule } from 'primeng/rating';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { MatIconModule } from '@angular/material/icon';
+import { TagModule } from 'primeng/tag';
+import { Router, RouterLink } from '@angular/router';
+import { ClearObservable } from '../../abstract/clear-observers.abstract';
 
 @Component({
   selector: 'app-product-card-preview',
@@ -25,18 +25,30 @@ import { MatIconModule } from '@angular/material/icon';
     RatingModule,
     CardModule,
     ButtonModule,
-    MatIconModule,
+    TagModule,
+    RouterLink,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductCardPreviewComponent implements OnInit {
+export class ProductCardPreviewComponent
+  extends ClearObservable
+  implements OnInit
+{
   @Input()
   productData: Product | undefined | null;
 
   public allProducts: Product[] | undefined | null;
   public ratingGroup!: FormGroup;
+  public selectedTag: string[] = [];
+  private productTag = ['New', 'Popular', 'Discount'];
 
-  constructor(private store: Store, private cd: ChangeDetectorRef) {}
+  constructor(
+    private store: Store,
+    private cd: ChangeDetectorRef,
+    private router: Router
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.ratingGroup = new FormGroup({
@@ -44,5 +56,17 @@ export class ProductCardPreviewComponent implements OnInit {
         Math.round(Number(this.productData?.rating?.rate))
       ),
     });
+
+    //test
+    if (this.productData && this.productData.id! % 2 === 0) {
+      this.selectedTag.push('New');
+      this.selectedTag.push('Popular');
+    } else {
+      this.selectedTag.push('Discount');
+    }
   }
+
+  openCard = (productId: number) => {
+    this.router.navigateByUrl(`/product/${productId}`);
+  };
 }
