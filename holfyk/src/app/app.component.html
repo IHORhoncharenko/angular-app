@@ -1,7 +1,19 @@
 <header>
   <h1>Holfyk in UA</h1>
-  <app-product-card-preview></app-product-card-preview>
 </header>
+
+<div class="main">
+  <ul class="main__product-list">
+    @for (product of allProducts; track product.id) {
+    <li>
+      <app-product-card-preview
+        [productData]="product"
+      ></app-product-card-preview>
+    </li>
+    }
+  </ul>
+</div>
+
 <footer>
   <small itemprop="copyrightNotice"
     ><span itemprop="copyrightYear">2024</span>-2025

@@ -1,9 +1,46 @@
 @if(productData){
-<article class="product">
-  <h2>{{ productData.title }}</h2>
-  <div class="product-image">
-    <img src="" alt="" />
-  </div>
+<article itemscope itemtype="https://schema.org/Product" class="product">
+  <p-card>
+    <ng-template pTemplate="header">
+      <img
+        fetchpriority="high"
+        class="product-image"
+        itemprop="image"
+        alt="{{ productData.title }}"
+        src="{{ productData.image }}"
+      />
+    </ng-template>
+    <h2 class="p-card-title" itemprop="name">{{ productData.title }}</h2>
+    <div
+      class="product-rating"
+      itemprop="aggregateRating"
+      itemscope
+      itemtype="https://schema.org/AggregateRating"
+    >
+      <form [formGroup]="ratingGroup">
+        <p-rating formControlName="value" [cancel]="false" [readonly]="true" />
+      </form>
+      <div class="product-rating__additional-info">
+        <small itemprop="ratingValue">{{ productData.rating?.rate }}</small>
+        of
+        <small itemprop="reviewCount">{{ productData.rating?.count }}</small>
+        reviews
+      </div>
+
+      <span class="p-card-subtitle">sku: {{ productData.id }}</span>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="price">
+        <data value="{{ productData.price }}">
+          <span>
+            {{ productData.price }}
+            <data class="currency-symbol" value="UAH">₴</data>
+          </span>
+        </data>
+        <mat-icon>add_shopping_cart</mat-icon>
+      </div>
+    </ng-template>
+  </p-card>
 </article>
 
 }
