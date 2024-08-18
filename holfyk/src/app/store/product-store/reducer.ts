@@ -16,5 +16,11 @@ export const ProductReducer = createReducer(
       ...state,
       allProducts: allProducts,
     };
+  }),
+  on(storeActions.selected, (state, { selectedProduct }) => {
+    return {
+      ...state,
+      selectedProduct: selectedProduct,
+    };
   })
 );

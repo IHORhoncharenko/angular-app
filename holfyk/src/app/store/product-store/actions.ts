@@ -53,9 +53,9 @@ export const submitSuccess = createAction(
 
 export const refresh = createAction(ProductActionType.Refresh);
 
-export const select = createAction(
+export const selected = createAction(
   ProductActionType.Selected,
-  props<{ selectedProductId: string | number }>()
+  props<{ selectedProduct: Product }>()
 );
 
 export const updateProduct = createAction(

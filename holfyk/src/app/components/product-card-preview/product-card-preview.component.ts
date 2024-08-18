@@ -14,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { Router, RouterLink } from '@angular/router';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
+import { selected } from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-product-card-preview',
@@ -40,7 +41,6 @@ export class ProductCardPreviewComponent
   public allProducts: Product[] | undefined | null;
   public ratingGroup!: FormGroup;
   public selectedTag: string[] = [];
-  private productTag = ['New', 'Popular', 'Discount'];
 
   constructor(
     private store: Store,
@@ -68,5 +68,8 @@ export class ProductCardPreviewComponent
 
   openCard = (productId: number) => {
     this.router.navigateByUrl(`/product/${productId}`);
+    if (this.productData) {
+      this.store.dispatch(selected({ selectedProduct: this.productData }));
+    }
   };
 }
