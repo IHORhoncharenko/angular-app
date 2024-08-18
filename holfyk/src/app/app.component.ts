@@ -15,6 +15,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { takeUntil } from 'rxjs';
 import { ClearObservable } from './abstract/clear-observers.abstract';
+import { HeaderComponent } from './components/header/header.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +28,8 @@ import { ClearObservable } from './abstract/clear-observers.abstract';
     ButtonModule,
     AvatarModule,
     AvatarGroupModule,
+    HeaderComponent,
+    BreadcrumbsComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

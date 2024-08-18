@@ -1,0 +1,28 @@
+<div class="header">
+  <div>
+    <p-sidebar [(visible)]="sidebarVisible">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+          <p-avatar
+            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+            shape="circle"
+          />
+          <span class="font-bold"> Amy Elsner </span>
+        </div>
+      </ng-template>
+      <p>Lorem ipsum dolor sit amet...</p>
+    </p-sidebar>
+    <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
+  </div>
+  <h1>Holfyk in UA</h1>
+  <div>
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <input formControlName="query" type="search" />
+    </form>
+  </div>
+  <div>
+    <span class="pi pi-user"></span>
+    <span class="pi pi-heart"></span>
+    <span class="pi pi-shopping-cart"></span>
+  </div>
+</div>

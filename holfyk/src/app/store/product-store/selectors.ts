@@ -12,3 +12,8 @@ export const selectChoiceProduct = createSelector(
   productState,
   (state) => state.selectedProduct
 );
+
+export const selectSearchProducts = createSelector(
+  productState,
+  (state) => state.searchProducts
+);

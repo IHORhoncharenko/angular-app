@@ -18,7 +18,7 @@ export enum ProductActionType {
 export const load = createAction(ProductActionType.Load);
 export const searchProducts = createAction(
   ProductActionType.SearchProducts,
-  props<{ query: Product }>()
+  props<{ searchProducts: any[] }>()
 );
 
 export const createProduct = createAction(

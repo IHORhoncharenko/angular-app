@@ -4,44 +4,31 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { RouterModule } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { NgClass } from '@angular/common';
-import { ClearObservable } from '../../abstract/clear-observers.abstract';
+import { MenuItem } from 'primeng/api';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
 import { selectChoiceProduct } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
-import { TabViewModule } from 'primeng/tabview';
-import { CommonModule } from '@angular/common';
-import { ImageModule } from 'primeng/image';
+import { ClearObservable } from '../../abstract/clear-observers.abstract';
 
 @Component({
-  selector: 'app-product-card',
-  templateUrl: './product-card.component.html',
-  styleUrls: ['./product-card.component.css'],
+  selector: 'app-breadcrumbs',
+  templateUrl: './breadcrumbs.component.html',
+  styleUrls: ['./breadcrumbs.component.css'],
   standalone: true,
-  imports: [
-    BreadcrumbModule,
-    RouterModule,
-    NgIf,
-    NgClass,
-    TabViewModule,
-    CommonModule,
-    ImageModule,
-  ],
+  imports: [BreadcrumbModule, NgIf, NgClass],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductCardComponent extends ClearObservable implements OnInit {
-  constructor(private cd: ChangeDetectorRef, private store: Store) {
+export class BreadcrumbsComponent extends ClearObservable implements OnInit {
+  public items: MenuItem[] | undefined;
+  public product: Product | null | undefined;
+
+  constructor(private store: Store, private cd: ChangeDetectorRef) {
     super();
   }
-
-  public items: MenuItem[] | undefined;
-  public home: MenuItem | undefined;
-  public product: Product | null | undefined;
 
   ngOnInit() {
     this.store

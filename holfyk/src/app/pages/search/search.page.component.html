@@ -1,0 +1,10 @@
+<app-breadcrumbs></app-breadcrumbs>
+<ul class="product-list">
+  @for (searchProduct of searchProducts; track searchProduct.id) {
+  <li>
+    <app-product-card-preview
+      [productData]="searchProduct"
+    ></app-product-card-preview>
+  </li>
+  }
+</ul>
