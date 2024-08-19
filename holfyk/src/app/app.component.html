@@ -3,22 +3,8 @@
 </header>
 
 <div class="main">
-  @if(!isShowHomePageSection){
+  <app-breadcrumbs></app-breadcrumbs>
   <router-outlet></router-outlet>
-  }@else {
-  <section>
-    <ul class="main__product-list">
-      @for (product of allProducts; track product.id) {
-      <li>
-        <app-product-card-preview
-          [productData]="product"
-        ></app-product-card-preview>
-      </li>
-      }
-    </ul>
-  </section>
-
-  }
 </div>
 
 <footer>
