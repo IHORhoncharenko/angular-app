@@ -1,0 +1,43 @@
+  nav {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  ol {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  ol li {
+    margin-right: 10px;
+    position: relative;
+  }
+
+  ol li:not(:last-child)::after {
+    content: " > ";
+    color: #6c757d;
+
+  }
+
+  ol li:last-child {
+    font-weight: bold;
+    color: #6c757d;
+  }
+
+  ol li a {
+    text-decoration: none;
+    color: #007bff;
+
+  }
+
+  ol li a:hover {
+    text-decoration: underline;
+  }
+
+  .pi-home {
+    margin-right: 5px;
+  }

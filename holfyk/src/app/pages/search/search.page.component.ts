@@ -5,9 +5,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectSearchProducts } from '../../store/product-store/selectors';
+import {
+  selectChoiceProduct,
+  selectSearchProducts,
+} from '../../store/product-store/selectors';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { filter, takeUntil } from 'rxjs';
+import { filter, forkJoin, map, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';

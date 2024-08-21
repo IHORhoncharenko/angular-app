@@ -57,3 +57,8 @@
 .header .pi:hover {
   color: #007bff;
 }
+
+.avatar {
+  display: flex;
+  align-items: center;
+}

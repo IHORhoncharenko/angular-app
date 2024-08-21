@@ -1,0 +1,13 @@
+<div>
+  <app-filter></app-filter>
+  <ul class="main__product-list">
+    @for (product of allProducts; track product.id) { @if(product.category ==
+    choiceCategory ){
+    <li>
+      <app-product-card-preview
+        [productData]="product"
+      ></app-product-card-preview>
+    </li>
+    } }
+  </ul>
+</div>

@@ -55,10 +55,15 @@ export const refresh = createAction(ProductActionType.Refresh);
 
 export const selected = createAction(
   ProductActionType.Selected,
-  props<{ selectedProduct: Product }>()
+  props<{ selectedProduct: Product | null }>()
 );
 
 export const updateProduct = createAction(
   ProductActionType.UpdateProduct,
   props<{ product: Product; ref: any }>()
+);
+
+export const loadCategory = createAction(
+  ProductActionType.Load,
+  props<{ choiceCategory: string }>()
 );

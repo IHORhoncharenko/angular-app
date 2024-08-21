@@ -28,5 +28,11 @@ export const ProductReducer = createReducer(
       ...state,
       searchProducts: searchProducts,
     };
+  }),
+  on(storeActions.loadCategory, (state, { choiceCategory }) => {
+    return {
+      ...state,
+      choiceCategory: choiceCategory,
+    };
   })
 );

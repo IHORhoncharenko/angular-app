@@ -8,7 +8,10 @@ import { Store } from '@ngrx/store';
 import { load } from './store/product-store/actions';
 import { ProductCardPreviewComponent } from './components/product-card-preview/product-card-preview.component';
 import { Product } from './models/product';
-import { selectAllProducts } from './store/product-store/selectors';
+import {
+  selectAllProducts,
+  selectChoiceProduct,
+} from './store/product-store/selectors';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
@@ -17,6 +20,7 @@ import { takeUntil } from 'rxjs';
 import { ClearObservable } from './abstract/clear-observers.abstract';
 import { HeaderComponent } from './components/header/header.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-root',
@@ -37,8 +41,6 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 })
 export class AppComponent extends ClearObservable {
   public allProducts: Product[] | null | undefined;
-  public sidebarVisible: boolean = false;
-  public isShowHomePageSection: boolean | null | undefined;
 
   constructor(
     private store: Store,
@@ -48,26 +50,5 @@ export class AppComponent extends ClearObservable {
     super();
   }
 
-  ngOnInit() {
-    this.store.dispatch(load());
-
-    this.store
-      .select(selectAllProducts)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((products) => {
-        this.allProducts = products;
-      });
-
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        if (event.url === '/') {
-          this.isShowHomePageSection = true;
-          this.cd.markForCheck();
-        } else {
-          this.isShowHomePageSection = false;
-          this.cd.markForCheck();
-        }
-      }
-    });
-  }
+  ngOnInit() {}
 }

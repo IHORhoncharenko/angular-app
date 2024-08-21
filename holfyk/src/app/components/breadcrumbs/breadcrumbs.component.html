@@ -1,13 +1,25 @@
-<p-breadcrumb class="max-w-full" [model]="items">
-  <ng-template pTemplate="item" let-item>
-    <ng-container *ngIf="item.route; else elseBlock">
-      <a [routerLink]="item.route" class="p-menuitem-link">
-        <span [ngClass]="[item.icon ? item.icon : '', 'text-color']"></span>
-        <span class="text-primary font-semibold">{{ item.label }}</span>
-      </a>
-    </ng-container>
-    <ng-template #elseBlock>
-      <span class="text-color">{{ item.label }}</span>
-    </ng-template>
-  </ng-template>
-</p-breadcrumb>
+@if(isShowProductBreadcrumbs == true){
+<div>
+  <nav>
+    <ol>
+      <li>
+        <a href="/"><span class="pi pi-home"></span></a>
+      </li>
+      <li>
+        <a href="/">{{ product!.category }}</a>
+      </li>
+      <li>{{ product!.title }}</li>
+    </ol>
+  </nav>
+</div>
+} @else{
+<div>
+  <nav>
+    <ol>
+      <li>
+        <a href="/"><span class="pi pi-home"></span></a>
+      </li>
+    </ol>
+  </nav>
+</div>
+}

@@ -17,11 +17,17 @@ import {
 } from '@angular/forms';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
-import { selectAllProducts } from '../../store/product-store/selectors';
+import {
+  selectAllProducts,
+  selectChoiceProduct,
+} from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { searchProducts } from '../../store/product-store/actions';
-import { Router } from '@angular/router';
+import {
+  loadCategory,
+  searchProducts,
+} from '../../store/product-store/actions';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +39,7 @@ import { Router } from '@angular/router';
     AvatarGroupModule,
     ToolbarModule,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
@@ -43,6 +50,7 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   public sidebarVisible: boolean = false;
   public allProducts: Product[] | null | undefined;
   public searchingProducts: Product[] = [];
+  public allCategory: string[] = [];
   private searchQuery: string | null | undefined;
 
   constructor(
@@ -62,6 +70,16 @@ export class HeaderComponent extends ClearObservable implements OnInit {
       )
       .subscribe((products) => {
         this.allProducts = products;
+        console.log(this.allProducts);
+
+        if (this.allProducts) {
+          this.allProducts.forEach((product) => {
+            if (!this.allCategory.includes(product.category!)) {
+              this.allCategory.push(product.category!);
+            }
+          });
+        }
+        this.cd.markForCheck();
       });
 
     this.searchForm = new FormGroup({
@@ -70,8 +88,9 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   }
 
   onSubmit() {
-    (this.searchingProducts = []),
-      (this.searchQuery = this.searchForm.value.query.trim().toLowerCase());
+    this.searchingProducts = [];
+    this.searchQuery = this.searchForm.value.query.trim().toLowerCase();
+    this.cd.markForCheck();
 
     if (this.allProducts && this.searchQuery) {
       this.allProducts.forEach((product: Product) => {
@@ -94,4 +113,12 @@ export class HeaderComponent extends ClearObservable implements OnInit {
       },
     });
   }
+
+  openCategory = (category: string) => {
+    let categoryCleaned = category.replace(/'/g, ''); // Видалення всіх апострофів
+    let categorySplit = categoryCleaned.split(' ').join('-');
+    this.store.dispatch(loadCategory({ choiceCategory: category }));
+
+    this.router.navigateByUrl(`/category/${categorySplit}`);
+  };
 }

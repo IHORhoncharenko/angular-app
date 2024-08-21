@@ -2,3 +2,21 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+li {
+  list-style-type: none;
+}
+footer {
+  text-align: center;
+}
+footer > small {
+  font-family: monospace;
+}
+
+.main__product-list {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+}

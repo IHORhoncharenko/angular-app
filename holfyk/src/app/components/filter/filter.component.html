@@ -1,0 +1,15 @@
+<div>
+  <dl>
+    <div>
+      <dt>ID product</dt>
+      @for (id of allProductIds; track $index) {
+      <dd>
+        <label>
+          <input type="checkbox" [value]="id" />
+          {{ id }}
+        </label>
+      </dd>
+      }
+    </div>
+  </dl>
+</div>

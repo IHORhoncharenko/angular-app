@@ -2,15 +2,21 @@
   <div>
     <p-sidebar [(visible)]="sidebarVisible">
       <ng-template pTemplate="header">
-        <div class="flex align-items-center gap-2">
+        <div class="avatar">
           <p-avatar
-            image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+            image="../../../assets/android-chrome-512x512.png"
             shape="circle"
           />
-          <span class="font-bold"> Amy Elsner </span>
+          <span class="font-bold">Holfyk in UA</span>
         </div>
       </ng-template>
-      <p>Lorem ipsum dolor sit amet...</p>
+      @if(allCategory){ @for (category of allCategory; track $index) {
+      <p>
+        <a (click)="openCategory(category); sidebarVisible = false">{{
+          category
+        }}</a>
+      </p>
+      } }
     </p-sidebar>
     <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
   </div>

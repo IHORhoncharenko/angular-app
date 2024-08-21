@@ -22,4 +22,11 @@ export const routes: Routes = [
         (p) => p.ProductCardComponent
       ),
   },
+  {
+    path: 'category/:id',
+    loadComponent: () =>
+      import('./pages/product-category/product-category.page.component').then(
+        (p) => p.ProductCategoryComponent
+      ),
+  },
 ];

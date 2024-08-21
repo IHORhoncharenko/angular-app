@@ -1,10 +1,11 @@
 import { Product } from '../../models/product';
 
 export interface ProductState {
-  allProducts?: [] | null;
+  allProducts?: Product[] | null;
   selectedProduct?: Product | null;
   query?: string | null;
-  searchProducts?: any[] | null;
+  searchProducts?: Product[] | null;
+  choiceCategory?: string | null;
 }
 
 export const initialState: ProductState = {
@@ -12,4 +13,5 @@ export const initialState: ProductState = {
   selectedProduct: null,
   query: null,
   searchProducts: null,
+  choiceCategory: null,
 };

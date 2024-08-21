@@ -1,0 +1,40 @@
+.filter-block {
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 300px;
+}
+
+.filter-block dl {
+  margin: 0;
+}
+
+.filter-block dt {
+  font-weight: bold;
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 5px;
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+.filter-block dd {
+  margin: 0;
+  padding: 5px;
+  display: none;
+}
+
+.filter-block dt:hover+dd,
+.filter-block dt:focus+dd {
+  display: block;
+}
+
+.filter-block dd label {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.filter-block dt:hover,
+.filter-block dt:focus {
+  background-color: #e0e0e0;
+}
