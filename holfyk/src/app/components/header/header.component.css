@@ -1,64 +1,78 @@
 .header {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
+  gap: 1em;
+
+  .header-first-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+  }
+
+  .avatar {
+    display: flex;
+    align-items: center;
+
+    p-avatar {
+      margin-right: 10px;
+    }
+
+    .font-bold {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 1em;
+
+    input[type="search"] {
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      width: 100%;
+      font-size: 16px;
+    }
+  }
+
+  .pi {
+    font-size: 24px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
 }
 
-.header h1 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: #343a40;
-}
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
 
-.header>div {
-  display: flex;
-  align-items: center;
-}
+    .header-first-row {
+      width: 100%;
+      margin-bottom: 1em;
+    }
 
-.header form {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
+    h1 {
+      font-size: 20px;
+      text-align: center;
+    }
 
-.header form input[type="search"] {
-  padding: 5px 10px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 14px;
-}
+    form {
+      margin-top: 0;
 
-.header form button {
-  background-color: #007bff;
-  border: none;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.header form button:hover {
-  background-color: #0056b3;
-}
-
-.header .pi {
-  font-size: 20px;
-  color: #343a40;
-  margin-left: 15px;
-  cursor: pointer;
-}
-
-.header .pi:hover {
-  color: #007bff;
-}
-
-.avatar {
-  display: flex;
-  align-items: center;
+      input[type="search"] {
+        width: 100%;
+      }
+    }
+  }
 }

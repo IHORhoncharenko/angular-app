@@ -1,34 +1,37 @@
 <div class="header">
-  <div>
-    <p-sidebar [(visible)]="sidebarVisible">
-      <ng-template pTemplate="header">
-        <div class="avatar">
-          <p-avatar
-            image="../../../assets/android-chrome-512x512.png"
-            shape="circle"
-          />
-          <span class="font-bold">Holfyk in UA</span>
-        </div>
-      </ng-template>
-      @if(allCategory){ @for (category of allCategory; track $index) {
-      <p>
-        <a (click)="openCategory(category); sidebarVisible = false">{{
-          category
-        }}</a>
-      </p>
-      } }
-    </p-sidebar>
-    <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
+  <div class="header-first-row">
+    <div>
+      <p-sidebar [(visible)]="sidebarVisible">
+        <ng-template pTemplate="header">
+          <div class="avatar">
+            <p-avatar
+              image="../../../assets/android-chrome-512x512.png"
+              shape="circle"
+            />
+            <span class="font-bold">Holfyk in UA</span>
+          </div>
+        </ng-template>
+        @if(allCategory){ @for (category of allCategory; track $index) {
+        <p>
+          <a (click)="openCategory(category); sidebarVisible = false">{{
+            category
+          }}</a>
+        </p>
+        } }
+      </p-sidebar>
+      <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
+    </div>
+    <h1>Holfyk in UA</h1>
+    <div>
+      <span class="pi pi-shopping-cart"></span>
+    </div>
   </div>
-  <h1>Holfyk in UA</h1>
-  <div>
-    <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-      <input formControlName="query" type="search" />
-    </form>
-  </div>
-  <div>
-    <span class="pi pi-user"></span>
-    <span class="pi pi-heart"></span>
-    <span class="pi pi-shopping-cart"></span>
-  </div>
+
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <input
+      placeholder="find your favorite holfyk..."
+      formControlName="query"
+      type="search"
+    />
+  </form>
 </div>

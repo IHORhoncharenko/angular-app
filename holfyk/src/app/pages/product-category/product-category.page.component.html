@@ -1,5 +1,5 @@
 <div>
-  <app-filter></app-filter>
+  <app-breadcrumbs></app-breadcrumbs>
   <ul class="main__product-list">
     @for (product of allProducts; track product.id) { @if(product.category ==
     choiceCategory ){
@@ -10,4 +10,5 @@
     </li>
     } }
   </ul>
+  <app-filter></app-filter>
 </div>

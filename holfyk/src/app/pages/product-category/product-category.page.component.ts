@@ -14,13 +14,14 @@ import {
 import { filter, takeUntil } from 'rxjs';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { FilterComponent } from '../../components/filter/filter.component';
+import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 @Component({
   selector: 'app-product-category',
   templateUrl: './product-category.page.component.html',
   styleUrls: ['./product-category.page.component.css'],
   standalone: true,
-  imports: [ProductCardPreviewComponent, FilterComponent],
+  imports: [ProductCardPreviewComponent, FilterComponent, BreadcrumbsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCategoryComponent

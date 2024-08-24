@@ -11,10 +11,11 @@ import { MenuItem } from 'primeng/api';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
 import {
+  selectChoiceCategory,
   selectChoiceProduct,
   selectSearchProducts,
 } from '../../store/product-store/selectors';
-import { filter, takeUntil, tap } from 'rxjs';
+import { combineLatest, filter, forkJoin, takeUntil, tap } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import { NavigationEnd, Router } from '@angular/router';
 
@@ -27,8 +28,20 @@ import { NavigationEnd, Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbsComponent extends ClearObservable implements OnInit {
-  public product: Product | null | undefined;
-  public isShowProductBreadcrumbs = false;
+  public viewState = [
+    {
+      isCategory: false,
+      category: '',
+    },
+    {
+      isProduct: false,
+      product: {} as Product,
+    },
+    {
+      isSearchProducts: false,
+      searchProducts: {},
+    },
+  ];
 
   constructor(
     private store: Store,
@@ -39,15 +52,28 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
   }
 
   ngOnInit() {
-    this.store
-      .select(selectChoiceProduct)
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((product) => product !== null && product !== undefined)
-      )
-      .subscribe((product) => {
-        this.product = product;
-        this.isShowProductBreadcrumbs = true;
+    combineLatest([
+      this.store.select(selectChoiceCategory),
+      this.store.select(selectChoiceProduct),
+      this.store.select(selectSearchProducts),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([category, product, searchProducts]) => {
+        if (category) {
+          this.viewState[0].isCategory = true;
+          this.viewState[0].category = category;
+        }
+        if (product) {
+          this.viewState[1].isProduct = true;
+          this.viewState[1].product = product;
+        }
+        if (searchProducts) {
+          this.viewState[2].isSearchProducts = true;
+          this.viewState[2].searchProducts = searchProducts;
+        }
+        this.cd.detectChanges();
       });
+
+    console.log(this.viewState);
   }
 }
