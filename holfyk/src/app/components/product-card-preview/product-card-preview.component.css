@@ -1,5 +1,7 @@
 .product {
-  width: 200px;
+  max-width: 190px;
+  display: inline-block;
+  margin: 5px;
 }
 
 .p-card-title {
