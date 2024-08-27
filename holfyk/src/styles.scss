@@ -2,9 +2,6 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-li {
-  list-style-type: none;
-}
 footer {
   text-align: center;
 }
@@ -12,11 +9,43 @@ footer > small {
   font-family: monospace;
 }
 
-.main__product-list {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1em;
+// *,
+// *::before,
+// *::after {
+//   padding: 0;
+//   margin: 0;
+//   border: 0;
+//   box-sizing: border-box;
+// }
+// a {
+//   text-decoration: none;
+//   color: inherit;
+// }
+// li {
+//   list-style: none;
+// }
+// img {
+//   vertical-align: top;
+// }
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//   font-weight: inherit;
+//   font-size: inherit;
+// }
+html,
+body {
+  line-height: 1;
+  height: 100%;
+}
+li {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+}
+ul {
+  padding: 0;
 }

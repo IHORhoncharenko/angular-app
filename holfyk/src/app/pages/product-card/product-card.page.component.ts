@@ -4,7 +4,6 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { NgIf } from '@angular/common';
@@ -12,13 +11,13 @@ import { NgClass } from '@angular/common';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
-import { selectChoiceProduct } from '../../store/product-store/selectors';
+import { selectProduct } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { TabViewModule } from 'primeng/tabview';
 import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
-import { selected } from '../../store/product-store/actions';
+import { loadProduct } from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-product-card',
@@ -50,7 +49,7 @@ export class ProductCardComponent extends ClearObservable implements OnInit {
 
   ngOnInit() {
     this.store
-      .select(selectChoiceProduct)
+      .select(selectProduct)
       .pipe(
         takeUntil(this.destroy$),
         filter((product) => product !== null && product !== undefined)
@@ -62,7 +61,7 @@ export class ProductCardComponent extends ClearObservable implements OnInit {
     this.router.events.subscribe((events) => {
       if (events instanceof NavigationEnd) {
         if (!events.url.includes('product')) {
-          this.store.dispatch(selected({ selectedProduct: null }));
+          this.store.dispatch(loadProduct({ selectedProduct: null }));
           this.cd.markForCheck();
         }
       }

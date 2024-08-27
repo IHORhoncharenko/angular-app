@@ -19,15 +19,17 @@ import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
 import {
   selectAllProducts,
-  selectChoiceProduct,
+  selectProduct,
 } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import {
   loadCategory,
-  searchProducts,
+  loadSearchedProducts,
+  loadSearchQuery,
 } from '../../store/product-store/actions';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
 
 @Component({
   selector: 'app-header',
@@ -49,14 +51,15 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   public searchForm!: FormGroup;
   public sidebarVisible: boolean = false;
   public allProducts: Product[] | null | undefined;
-  public searchingProducts: Product[] = [];
+  public searchedProducts: Product[] = [];
   public allCategory: string[] = [];
   private searchQuery: string | null | undefined;
 
   constructor(
     private store: Store,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private validUrlPipe: ValidUrlPipe
   ) {
     super();
   }
@@ -88,22 +91,26 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   }
 
   onSubmit() {
-    this.searchingProducts = [];
+    this.store.dispatch(
+      loadSearchQuery({ searchQuery: this.searchForm.value.query })
+    );
+
+    this.searchedProducts = [];
     this.searchQuery = this.searchForm.value.query.trim().toLowerCase();
     this.cd.markForCheck();
 
     if (this.allProducts && this.searchQuery) {
       this.allProducts.forEach((product: Product) => {
         if (product.title!.toLowerCase().includes(this.searchQuery!)) {
-          this.searchingProducts.push(product);
+          this.searchedProducts.push(product);
         }
       });
     } else {
       alert('products NOT FOUND');
     }
     this.store.dispatch(
-      searchProducts({
-        searchProducts: this.searchingProducts,
+      loadSearchedProducts({
+        searchedProducts: this.searchedProducts,
       })
     );
 
@@ -112,13 +119,29 @@ export class HeaderComponent extends ClearObservable implements OnInit {
         q: this.searchForm.value.query,
       },
     });
+
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((events) => {
+      if (events instanceof NavigationEnd) {
+        if (!events.url.includes('/search')) {
+          this.store.dispatch(loadSearchQuery({ searchQuery: null }));
+          this.store.dispatch(loadSearchedProducts({ searchedProducts: null }));
+
+          const inputElement = document.getElementById('searchInput');
+          if (inputElement) {
+            (inputElement as HTMLInputElement).value = '';
+          }
+        }
+      }
+    });
   }
 
   openCategory = (category: string) => {
-    let categoryCleaned = category.replace(/'/g, ''); // Видалення всіх апострофів
-    let categorySplit = categoryCleaned.split(' ').join('-');
-    this.store.dispatch(loadCategory({ choiceCategory: category }));
+    this.store.dispatch(loadCategory({ selectedCategory: category }));
 
-    this.router.navigateByUrl(`/category/${categorySplit}`);
+    this.validUrlPipe.transform(category);
+
+    this.router.navigateByUrl(
+      `/category/${this.validUrlPipe.transform(category)}`
+    );
   };
 }

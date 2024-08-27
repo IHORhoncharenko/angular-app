@@ -11,28 +11,34 @@ export const ProductReducer = createReducer(
       error: error,
     };
   }),
-  on(storeActions.loadSuccess, (state, { allProducts }) => {
+  on(storeActions.loadAllProductsSuccess, (state, { allProducts }) => {
     return {
       ...state,
       allProducts: allProducts,
     };
   }),
-  on(storeActions.selected, (state, { selectedProduct }) => {
+  on(storeActions.loadProduct, (state, { selectedProduct }) => {
     return {
       ...state,
       selectedProduct: selectedProduct,
     };
   }),
-  on(storeActions.searchProducts, (state, { searchProducts }) => {
+  on(storeActions.loadSearchedProducts, (state, { searchedProducts }) => {
     return {
       ...state,
-      searchProducts: searchProducts,
+      searchedProducts: searchedProducts,
     };
   }),
-  on(storeActions.loadCategory, (state, { choiceCategory }) => {
+  on(storeActions.loadCategory, (state, { selectedCategory }) => {
     return {
       ...state,
-      choiceCategory: choiceCategory,
+      selectedCategory: selectedCategory,
+    };
+  }),
+  on(storeActions.loadSearchQuery, (state, { searchQuery }) => {
+    return {
+      ...state,
+      searchQuery: searchQuery,
     };
   })
 );

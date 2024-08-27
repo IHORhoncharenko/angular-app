@@ -9,12 +9,14 @@ import { Store } from '@ngrx/store';
 import { Product } from '../../models/product';
 import {
   selectAllProducts,
-  selectChoiceCategory,
+  selectCategory,
 } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { FilterComponent } from '../../components/filter/filter.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { NavigationEnd, Router } from '@angular/router';
+import { loadCategory } from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-product-category',
@@ -31,7 +33,11 @@ export class ProductCategoryComponent
   public allProducts: Product[] | null | undefined;
   public choiceCategory: string | null | undefined;
 
-  constructor(private store: Store, private cd: ChangeDetectorRef) {
+  constructor(
+    private store: Store,
+    private cd: ChangeDetectorRef,
+    private router: Router
+  ) {
     super();
   }
 
@@ -47,13 +53,20 @@ export class ProductCategoryComponent
       });
 
     this.store
-      .select(selectChoiceCategory)
+      .select(selectCategory)
       .pipe(takeUntil(this.destroy$))
       .subscribe((category) => {
         this.choiceCategory = category;
         this.cd.markForCheck();
       });
 
-    console.log(this.choiceCategory);
+    this.router.events.subscribe((events) => {
+      if (events instanceof NavigationEnd) {
+        if (!events.url.includes('category')) {
+          this.store.dispatch(loadCategory({ selectedCategory: null }));
+          this.cd.markForCheck();
+        }
+      }
+    });
   }
 }

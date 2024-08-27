@@ -5,15 +5,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  selectChoiceProduct,
-  selectSearchProducts,
-} from '../../store/product-store/selectors';
+import { selectSearchProducts } from '../../store/product-store/selectors';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { filter, forkJoin, map, takeUntil } from 'rxjs';
+import { filter, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
+import { NavigationEnd, Router } from '@angular/router';
+import { loadSearchedProducts } from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-search',
@@ -26,7 +25,11 @@ import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.c
 export class SearchComponent extends ClearObservable implements OnInit {
   public searchProducts: Product[] | null | undefined;
 
-  constructor(private store: Store, private cd: ChangeDetectorRef) {
+  constructor(
+    private store: Store,
+    private cd: ChangeDetectorRef,
+    private router: Router
+  ) {
     super();
   }
 

@@ -1,26 +1,13 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-} from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { load } from './store/product-store/actions';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { ProductCardPreviewComponent } from './components/product-card-preview/product-card-preview.component';
 import { Product } from './models/product';
-import {
-  selectAllProducts,
-  selectChoiceProduct,
-} from './store/product-store/selectors';
 import { SidebarModule } from 'primeng/sidebar';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { takeUntil } from 'rxjs';
-import { ClearObservable } from './abstract/clear-observers.abstract';
 import { HeaderComponent } from './components/header/header.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
-import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-root',
@@ -39,16 +26,10 @@ import { tick } from '@angular/core/testing';
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent extends ClearObservable {
+export class AppComponent {
   public allProducts: Product[] | null | undefined;
 
-  constructor(
-    private store: Store,
-    private cd: ChangeDetectorRef,
-    private router: Router
-  ) {
-    super();
-  }
+  constructor() {}
 
   ngOnInit() {}
 }

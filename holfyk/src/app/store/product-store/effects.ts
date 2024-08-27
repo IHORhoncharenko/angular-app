@@ -25,7 +25,7 @@ export class ProductEffects {
               `color: green; font-weight: 700`,
               data
             );
-            return storeActions.loadSuccess({
+            return storeActions.loadAllProductsSuccess({
               allProducts: data,
             });
           }),

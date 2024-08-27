@@ -16,15 +16,6 @@ export enum ProductActionType {
 }
 
 export const load = createAction(ProductActionType.Load);
-export const searchProducts = createAction(
-  ProductActionType.SearchProducts,
-  props<{ searchProducts: any[] }>()
-);
-
-export const createProduct = createAction(
-  ProductActionType.CreateProduct,
-  props<{ product: Product; ref: any }>()
-);
 
 export const actionFailure = createAction(
   ProductActionType.ActionFailure,
@@ -36,34 +27,27 @@ export const actionSuccess = createAction(
   props<{ msg: string }>()
 );
 
-export const updateTotal = createAction(
-  ProductActionType.UpdateTotal,
-  props<{ total: number }>()
+export const loadSearchedProducts = createAction(
+  ProductActionType.SearchProducts,
+  props<{ searchedProducts: any[] | null }>()
 );
 
-export const loadSuccess = createAction(
+export const loadAllProductsSuccess = createAction(
   ProductActionType.LoadSuccess,
-  props<{ allProducts: any }>()
+  props<{ allProducts: any | null }>()
 );
 
-export const submitSuccess = createAction(
-  ProductActionType.SubmitSuccess,
-  props<{ msg: string }>()
-);
-
-export const refresh = createAction(ProductActionType.Refresh);
-
-export const selected = createAction(
+export const loadProduct = createAction(
   ProductActionType.Selected,
   props<{ selectedProduct: Product | null }>()
 );
 
-export const updateProduct = createAction(
-  ProductActionType.UpdateProduct,
-  props<{ product: Product; ref: any }>()
-);
-
 export const loadCategory = createAction(
   ProductActionType.Load,
-  props<{ choiceCategory: string }>()
+  props<{ selectedCategory: string | null }>()
+);
+
+export const loadSearchQuery = createAction(
+  ProductActionType.Load,
+  props<{ searchQuery: string | null }>()
 );

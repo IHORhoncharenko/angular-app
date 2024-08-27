@@ -1,6 +1,6 @@
 @if(product){
 <app-breadcrumbs></app-breadcrumbs>
-<p-tabView>
+<p-tabView class="product">
   <p-tabPanel header="Main">
     <h1>{{ product.title }}</h1>
     <div class="product-main-tab">
@@ -16,9 +16,7 @@
 
       <div>
         <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum eius
-          optio quo id impedit sequi sint esse cumque, saepe aliquid incidunt,
-          nihil amet iusto non repudiandae excepturi distinctio similique hic.
+          {{ product.description }}
         </p>
       </div>
     </div>

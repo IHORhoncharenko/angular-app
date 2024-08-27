@@ -1,12 +1,6 @@
-.product-list {
+ul {
   display: flex;
-  align-items: center;
-  flex-direction: row;
   flex-wrap: wrap;
+  gap: 0.5em;
   justify-content: center;
-  gap: 1em;
-}
-
-li {
-  list-style-type: none;
 }

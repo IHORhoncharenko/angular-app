@@ -21,7 +21,15 @@
       </p-sidebar>
       <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
     </div>
-    <h1>Holfyk in UA</h1>
+    <h1>
+      <a
+        style="text-decoration: none"
+        [routerLink]="['/']"
+        routerLinkActive="router-link-active"
+        >Holfyk in UA</a
+      >
+    </h1>
+
     <div>
       <span class="pi pi-shopping-cart"></span>
     </div>
@@ -29,6 +37,7 @@
 
   <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <input
+      id="searchInput"
       placeholder="find your favorite holfyk..."
       formControlName="query"
       type="search"

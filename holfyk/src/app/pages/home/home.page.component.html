@@ -1,4 +1,11 @@
 <app-breadcrumbs></app-breadcrumbs>
-@for (product of allProducts; track product.id) {
-<app-product-card-preview [productData]="product"></app-product-card-preview>
-}
+<ul>
+  @for (product of allProducts; track product.id) {
+  <li>
+    <app-product-card-preview
+      [productData]="product"
+    ></app-product-card-preview>
+  </li>
+
+  }
+</ul>

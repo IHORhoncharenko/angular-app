@@ -8,17 +8,17 @@ export const selectAllProducts = createSelector(
   (state) => state.allProducts
 );
 
-export const selectChoiceProduct = createSelector(
+export const selectProduct = createSelector(
   productState,
   (state) => state.selectedProduct
 );
 
-export const selectSearchProducts = createSelector(
+export const selectCategory = createSelector(
   productState,
-  (state) => state.searchProducts
+  (state) => state.selectedCategory
 );
 
-export const selectChoiceCategory = createSelector(
+export const selectSearchProducts = createSelector(
   productState,
-  (state) => state.choiceCategory
+  (state) => state.searchedProducts
 );
