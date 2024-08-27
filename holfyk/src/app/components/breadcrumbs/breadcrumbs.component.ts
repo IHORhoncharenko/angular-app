@@ -78,21 +78,13 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
         }
         this.cd.detectChanges();
       });
-
-    console.log(this.viewState);
   }
 
   openCategory = (category: string) => {
     this.store.dispatch(loadCategory({ selectedCategory: category }));
 
-    this.validUrlPipe.transform(category);
-
     this.router.navigateByUrl(
       `/category/${this.validUrlPipe.transform(category)}`
     );
-  };
-
-  openHomePage = () => {
-    this.router.navigateByUrl('/');
   };
 }

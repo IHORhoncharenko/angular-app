@@ -11,7 +11,7 @@ import {
   selectAllProducts,
   selectCategory,
 } from '../../store/product-store/selectors';
-import { filter, takeUntil } from 'rxjs';
+import { concatMap, filter, takeUntil, tap } from 'rxjs';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { FilterComponent } from '../../components/filter/filter.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
@@ -46,17 +46,23 @@ export class ProductCategoryComponent
       .select(selectAllProducts)
       .pipe(
         takeUntil(this.destroy$),
-        filter((products) => products !== null && products !== undefined)
+        filter((products) => products !== null && products !== undefined),
+        tap((products) => {
+          this.allProducts = products;
+        }),
+        concatMap(() => {
+          return this.store.select(selectCategory);
+        }),
+        filter(
+          (selectCategory) =>
+            selectCategory !== null && selectCategory !== undefined
+        ),
+        tap((selectCategory) => {
+          this.choiceCategory = selectCategory;
+        })
       )
-      .subscribe((products) => {
-        this.allProducts = products;
-      });
-
-    this.store
-      .select(selectCategory)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((category) => {
-        this.choiceCategory = category;
+      .subscribe(() => {
+        console.log(`success`);
         this.cd.markForCheck();
       });
 

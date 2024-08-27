@@ -4,7 +4,9 @@ viewState[2].isSearchProducts){ @if(viewState[1].isProduct){
 <nav class="breadcrumbs">
   <ol>
     <li>
-      <a (click)="openHomePage()"><span class="pi pi-home"></span></a>
+      <a [routerLink]="['/']" routerLinkActive="router-link-active"
+        ><span class="pi pi-home"></span
+      ></a>
     </li>
 
     @if(viewState[1].product.category){
@@ -24,7 +26,9 @@ viewState[2].isSearchProducts){ @if(viewState[1].isProduct){
 <nav class="breadcrumbs">
   <ol>
     <li>
-      <a (click)="openHomePage()"><span class="pi pi-home"></span></a>
+      <a [routerLink]="['/']" routerLinkActive="router-link-active"
+        ><span class="pi pi-home"></span
+      ></a>
     </li>
     <li>{{ viewState[0].category }}</li>
   </ol>
@@ -35,7 +39,9 @@ viewState[2].isSearchProducts){ @if(viewState[1].isProduct){
   <nav>
     <ol>
       <li>
-        <a (click)="openHomePage()"><span class="pi pi-home"></span></a>
+        <a [routerLink]="['/']" routerLinkActive="router-link-active"
+          ><span class="pi pi-home"></span
+        ></a>
       </li>
     </ol>
   </nav>
@@ -45,7 +51,9 @@ viewState[2].isSearchProducts){ @if(viewState[1].isProduct){
   <nav>
     <ol>
       <li>
-        <a (click)="openHomePage()"><span class="pi pi-home"></span></a>
+        <a [routerLink]="['/']" routerLinkActive="router-link-active"
+          ><span class="pi pi-home"></span
+        ></a>
       </li>
     </ol>
   </nav>
