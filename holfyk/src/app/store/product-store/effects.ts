@@ -9,7 +9,7 @@ import { ProductService } from '../../services/product-services/product-services
 export class ProductEffects {
   products$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(storeActions.load),
+      ofType(storeActions.loadAllProducts),
       switchMap(() => {
         return this.productService.getAllProducts().pipe(
           tap(() => {

@@ -5,7 +5,7 @@ import { Product } from '../../models/product';
 import { takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
-import { load } from '../../store/product-store/actions';
+import { loadAllProducts } from '../../store/product-store/actions';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
 
 @Component({
@@ -24,7 +24,7 @@ export class HomeComponent extends ClearObservable implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(load());
+    this.store.dispatch(loadAllProducts());
 
     this.store
       .select(selectAllProducts)

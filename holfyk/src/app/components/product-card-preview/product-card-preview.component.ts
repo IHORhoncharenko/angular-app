@@ -14,7 +14,10 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { Router, RouterLink } from '@angular/router';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { loadProduct } from '../../store/product-store/actions';
+import {
+  loadProduct,
+  loadProductsToCart,
+} from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-product-card-preview',
@@ -41,6 +44,7 @@ export class ProductCardPreviewComponent
   public allProducts: Product[] | undefined | null;
   public ratingGroup!: FormGroup;
   public selectedTag: string[] = [];
+  private productsInCart: number[] = [];
 
   constructor(
     private store: Store,
@@ -71,5 +75,27 @@ export class ProductCardPreviewComponent
     if (this.productData) {
       this.store.dispatch(loadProduct({ selectedProduct: this.productData }));
     }
+  };
+
+  addToCart = (productID: number) => {
+    // Отримуємо існуючий масив продуктів з локального сховища або створюємо новий
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+    // Перевіряємо, чи є cart масивом, якщо ні, ініціалізуємо порожній масив
+    if (!Array.isArray(cart)) {
+      cart = [];
+    }
+
+    // Додаємо новий продукт до масиву
+    cart.push(productID);
+
+    // Зберігаємо оновлений масив у локальне сховище
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Оновлюємо локальний масив продуктів у корзині
+    this.productsInCart = cart;
+    this.store.dispatch(
+      loadProductsToCart({ productsInCart: this.productsInCart })
+    );
   };
 }

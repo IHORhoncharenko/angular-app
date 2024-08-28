@@ -19,7 +19,9 @@ import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
 import {
   selectAllProducts,
+  selectCategory,
   selectProduct,
+  selectProductsInCart,
 } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
@@ -30,6 +32,7 @@ import {
 } from '../../store/product-store/actions';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-header',
@@ -42,6 +45,7 @@ import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
     ToolbarModule,
     ReactiveFormsModule,
     RouterLink,
+    BadgeModule,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
@@ -53,6 +57,7 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   public allProducts: Product[] | null | undefined;
   public searchedProducts: Product[] = [];
   public allCategory: string[] = [];
+  public productsInCart: number | string = 0;
   private searchQuery: string | null | undefined;
 
   constructor(
@@ -66,6 +71,17 @@ export class HeaderComponent extends ClearObservable implements OnInit {
 
   ngOnInit() {
     this.store
+      .select(selectProductsInCart)
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((productsID) => productsID !== null && productsID !== undefined)
+      )
+      .subscribe((productsID) => {
+        this.productsInCart = productsID!.length;
+        this.cd.markForCheck();
+      });
+
+    this.store
       .select(selectAllProducts)
       .pipe(
         takeUntil(this.destroy$),
@@ -73,12 +89,13 @@ export class HeaderComponent extends ClearObservable implements OnInit {
       )
       .subscribe((products) => {
         this.allProducts = products;
-        console.log(this.allProducts);
 
         if (this.allProducts) {
           this.allProducts.forEach((product) => {
-            if (!this.allCategory.includes(product.category!)) {
-              this.allCategory.push(product.category!);
+            if (product.category) {
+              if (!this.allCategory.includes(product.category)) {
+                this.allCategory.push(product.category);
+              }
             }
           });
         }
@@ -137,6 +154,10 @@ export class HeaderComponent extends ClearObservable implements OnInit {
 
   openCategory = (category: string) => {
     this.store.dispatch(loadCategory({ selectedCategory: category }));
+    console.log(
+      `%c DISPATCH CATEGORY! ${category}`,
+      `color:red; font-size: 24px`
+    );
 
     this.router.navigateByUrl(
       `/category/${this.validUrlPipe.transform(category)}`

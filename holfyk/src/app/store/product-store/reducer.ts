@@ -40,5 +40,11 @@ export const ProductReducer = createReducer(
       ...state,
       searchQuery: searchQuery,
     };
+  }),
+  on(storeActions.loadProductsToCart, (state, { productsInCart }) => {
+    return {
+      ...state,
+      productsInCart: productsInCart,
+    };
   })
 );

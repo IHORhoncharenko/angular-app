@@ -15,7 +15,7 @@ export enum ProductActionType {
   SubmitSuccess = '[Product API] Submit Success',
 }
 
-export const load = createAction(ProductActionType.Load);
+export const loadAllProducts = createAction(ProductActionType.Load);
 
 export const actionFailure = createAction(
   ProductActionType.ActionFailure,
@@ -50,4 +50,9 @@ export const loadCategory = createAction(
 export const loadSearchQuery = createAction(
   ProductActionType.Load,
   props<{ searchQuery: string | null }>()
+);
+
+export const loadProductsToCart = createAction(
+  ProductActionType.Load,
+  props<{ productsInCart: number[] | null }>()
 );

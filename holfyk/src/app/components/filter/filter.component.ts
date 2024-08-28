@@ -34,7 +34,5 @@ export class FilterComponent extends ClearObservable implements OnInit {
           this.allProductIds?.push(p.id!);
         });
       });
-
-    console.log(this.allProductIds);
   }
 }

@@ -6,6 +6,7 @@ export interface ProductState {
   selectedCategory?: string | null;
   searchQuery?: string | null;
   searchedProducts?: Product[] | null;
+  productsInCart?: number[] | null;
 }
 
 export const initialState: ProductState = {
@@ -14,4 +15,5 @@ export const initialState: ProductState = {
   selectedCategory: null,
   searchQuery: null,
   searchedProducts: null,
+  productsInCart: null,
 };

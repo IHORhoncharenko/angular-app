@@ -82,3 +82,13 @@ form:hover .product-rating__additional-info {
 ::ng-deep .p-card-footer {
   padding: 0px;
 }
+
+.pi-shopping-cart {
+  cursor: pointer;
+
+}
+
+.pi-shopping-cart:hover {
+  font-size: larger;
+  color: blue;
+}

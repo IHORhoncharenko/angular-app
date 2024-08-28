@@ -43,7 +43,10 @@
             <data class="currency-symbol" value="UAH">₴</data>
           </span>
         </data>
-        <span class="pi pi-shopping-cart price__icon"></span>
+        <span
+          (click)="addToCart(productData.id!)"
+          class="pi pi-shopping-cart price__icon"
+        ></span>
       </div>
     </div>
 

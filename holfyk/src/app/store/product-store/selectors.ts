@@ -22,3 +22,8 @@ export const selectSearchProducts = createSelector(
   productState,
   (state) => state.searchedProducts
 );
+
+export const selectProductsInCart = createSelector(
+  productState,
+  (state) => state.productsInCart
+);

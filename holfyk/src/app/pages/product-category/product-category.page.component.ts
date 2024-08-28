@@ -56,21 +56,21 @@ export class ProductCategoryComponent
         filter(
           (selectCategory) =>
             selectCategory !== null && selectCategory !== undefined
-        ),
-        tap((selectCategory) => {
-          this.choiceCategory = selectCategory;
-        })
+        )
       )
-      .subscribe(() => {
-        console.log(`success`);
-        this.cd.markForCheck();
+      .subscribe((selectCategory) => {
+        this.choiceCategory = selectCategory;
+        this.cd.detectChanges();
       });
 
     this.router.events.subscribe((events) => {
       if (events instanceof NavigationEnd) {
-        if (!events.url.includes('category')) {
+        if (!events.url.includes('/category')) {
           this.store.dispatch(loadCategory({ selectedCategory: null }));
-          this.cd.markForCheck();
+          console.log(
+            `%c REMOVE CATEGORY! ${events.url}`,
+            `color:red; font-size: 24px`
+          );
         }
       }
     });
