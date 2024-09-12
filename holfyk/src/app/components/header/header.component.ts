@@ -27,12 +27,14 @@ import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import {
   loadCategory,
+  loadProductsToCart,
   loadSearchedProducts,
   loadSearchQuery,
 } from '../../store/product-store/actions';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
 import { BadgeModule } from 'primeng/badge';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-header',
@@ -46,6 +48,7 @@ import { BadgeModule } from 'primeng/badge';
     ReactiveFormsModule,
     RouterLink,
     BadgeModule,
+    DialogModule,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
@@ -57,7 +60,8 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   public allProducts: Product[] | null | undefined;
   public searchedProducts: Product[] = [];
   public allCategory: string[] = [];
-  public productsInCart: number | string = 0;
+  public productsInCart: undefined | string = '0';
+  public visible: boolean = false;
   private searchQuery: string | null | undefined;
 
   constructor(
@@ -77,8 +81,8 @@ export class HeaderComponent extends ClearObservable implements OnInit {
         filter((productsID) => productsID !== null && productsID !== undefined)
       )
       .subscribe((productsID) => {
-        this.productsInCart = productsID!.length;
-        this.cd.markForCheck();
+        this.productsInCart = String(productsID!.length);
+        this.cd.detectChanges();
       });
 
     this.store
@@ -105,6 +109,10 @@ export class HeaderComponent extends ClearObservable implements OnInit {
     this.searchForm = new FormGroup({
       query: new FormControl(''),
     });
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 
   onSubmit() {

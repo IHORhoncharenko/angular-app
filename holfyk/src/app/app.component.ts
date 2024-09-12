@@ -49,9 +49,12 @@ export class AppComponent {
     //   }
     // });
 
-    this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    if (this.cart) {
-      this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
+    if (typeof window !== 'undefined') {
+      this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      if (this.cart) {
+        this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
+        console.log(this.cart);
+      }
     }
   }
 }

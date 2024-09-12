@@ -83,12 +83,11 @@ form:hover .product-rating__additional-info {
   padding: 0px;
 }
 
-.pi-shopping-cart {
+.price__icon {
   cursor: pointer;
 
 }
 
-.pi-shopping-cart:hover {
-  font-size: larger;
-  color: blue;
+.price__icon:hover {
+  color: green;
 }

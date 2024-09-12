@@ -18,6 +18,8 @@ import {
   loadProduct,
   loadProductsToCart,
 } from '../../store/product-store/actions';
+import { selectProductsInCart } from '../../store/product-store/selectors';
+import { filter, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-card-preview',
@@ -44,6 +46,8 @@ export class ProductCardPreviewComponent
   public allProducts: Product[] | undefined | null;
   public ratingGroup!: FormGroup;
   public selectedTag: string[] = [];
+  public isBuy = false;
+  public cart: number[] | null | undefined;
   private productsInCart: number[] = [];
 
   constructor(
@@ -61,8 +65,20 @@ export class ProductCardPreviewComponent
       ),
     });
 
-    //test
+    if (typeof window !== 'undefined') {
+      this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+      if (this.productData && this.cart && this.cart.length > 0) {
+        if (this.cart.includes(this.productData.id!)) {
+          this.isBuy = true;
+        }
+
+        this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
+      }
+    }
+
     if (this.productData && this.productData.id! % 2 === 0) {
+      //test
       this.selectedTag.push('New');
       this.selectedTag.push('Popular');
     } else {
@@ -78,24 +94,47 @@ export class ProductCardPreviewComponent
   };
 
   addToCart = (productID: number) => {
-    // Отримуємо існуючий масив продуктів з локального сховища або створюємо новий
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (typeof window !== 'undefined') {
+      // Отримуємо існуючий масив продуктів з локального сховища або створюємо новий
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-    // Перевіряємо, чи є cart масивом, якщо ні, ініціалізуємо порожній масив
-    if (!Array.isArray(cart)) {
-      cart = [];
+      // Перевіряємо, чи є cart масивом, якщо ні, ініціалізуємо порожній масив
+      if (!Array.isArray(cart)) {
+        cart = [];
+      }
+
+      // Додаємо новий продукт до масиву
+      cart.push(productID);
+
+      // Зберігаємо оновлений масив у локальне сховище
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      // Оновлюємо локальний масив продуктів у корзині
+      this.productsInCart = cart;
+      this.store.dispatch(
+        loadProductsToCart({ productsInCart: this.productsInCart })
+      );
     }
+  };
 
-    // Додаємо новий продукт до масиву
-    cart.push(productID);
+  removeFromCart = (productID: number) => {
+    if (typeof window !== 'undefined') {
+      // Отримуємо існуючий масив продуктів з локального сховища або створюємо новий
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-    // Зберігаємо оновлений масив у локальне сховище
-    localStorage.setItem('cart', JSON.stringify(cart));
+      let searchIndex = cart.findIndex((elem: number) => elem === productID);
 
-    // Оновлюємо локальний масив продуктів у корзині
-    this.productsInCart = cart;
-    this.store.dispatch(
-      loadProductsToCart({ productsInCart: this.productsInCart })
-    );
+      if (searchIndex !== -1) {
+        cart.splice(searchIndex, 1);
+        // Зберігаємо оновлений масив у локальне сховище
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Оновлюємо локальний масив продуктів у корзині
+        this.productsInCart = cart;
+        this.store.dispatch(
+          loadProductsToCart({ productsInCart: this.productsInCart })
+        );
+      }
+    }
   };
 }

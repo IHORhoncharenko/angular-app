@@ -43,10 +43,19 @@
             <data class="currency-symbol" value="UAH">₴</data>
           </span>
         </data>
+
+        @if(!isBuy) {
         <span
-          (click)="addToCart(productData.id!)"
+          (click)="addToCart(productData.id!); isBuy = true"
           class="pi pi-shopping-cart price__icon"
         ></span>
+        } @if(isBuy){
+        <span
+          (click)="removeFromCart(productData.id!); isBuy = false"
+          style="color: green"
+          class="pi pi-cart-minus price__icon"
+        ></span>
+        }
       </div>
     </div>
 
