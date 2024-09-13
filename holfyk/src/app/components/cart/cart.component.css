@@ -1,0 +1,20 @@
+.btn-popup-cart {
+  display: flex;
+  justify-content: end;
+  gap: 2px
+}
+
+.product-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  aspect-ratio: 3/4;
+  padding: 25px;
+}
+
+
+.wrap-popup-product {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+}

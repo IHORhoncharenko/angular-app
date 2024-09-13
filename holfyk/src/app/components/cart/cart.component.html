@@ -1,0 +1,44 @@
+@if(shoppingCartQuantity === '0' ) {
+<div>
+  <p-button icon="pi pi-shopping-cart" (onClick)="showDialog()" />
+</div>
+} @else{
+<div>
+  <p-button
+    [badge]="shoppingCartQuantity"
+    icon="pi
+      pi-shopping-cart"
+    (onClick)="showDialog()"
+  />
+</div>
+}
+
+<p-dialog
+  header="Shopping Cart"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '75em' }"
+>
+  @for (product of productsInCart; track product.id) {
+  <div ngClass="wrap-popup-product">
+    <img ngClass="product-image" [src]="product.image" [alt]="product.title" />
+
+    <h2>{{ product.title }}</h2>
+    <p-inputNumber
+      [(ngModel)]="value3"
+      [showButtons]="true"
+      buttonLayout="vertical"
+      spinnerMode="vertical"
+      inputId="vertical"
+      decrementButtonClass="p-button-secondary"
+      incrementButtonClass="p-button-secondary"
+      incrementButtonIcon="pi pi-plus"
+      decrementButtonIcon="pi pi-minus"
+    />
+  </div>
+  }
+  <div ngClass="btn-popup-cart">
+    <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
+    <p-button label="Save" (onClick)="visible = false" />
+  </div>
+</p-dialog>

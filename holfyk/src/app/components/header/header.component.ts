@@ -13,21 +13,18 @@ import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
-  Validators,
+  FormsModule,
 } from '@angular/forms';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
 import {
   selectAllProducts,
-  selectCategory,
-  selectProduct,
   selectProductsInCart,
 } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import {
   loadCategory,
-  loadProductsToCart,
   loadSearchedProducts,
   loadSearchQuery,
 } from '../../store/product-store/actions';
@@ -35,6 +32,9 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
 import { BadgeModule } from 'primeng/badge';
 import { DialogModule } from 'primeng/dialog';
+import { NgClass, NgStyle } from '@angular/common';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CartComponent } from '../cart/cart.component';
 
 @Component({
   selector: 'app-header',
@@ -49,6 +49,11 @@ import { DialogModule } from 'primeng/dialog';
     RouterLink,
     BadgeModule,
     DialogModule,
+    NgStyle,
+    NgClass,
+    FormsModule,
+    InputNumberModule,
+    CartComponent,
   ],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
@@ -60,8 +65,11 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   public allProducts: Product[] | null | undefined;
   public searchedProducts: Product[] = [];
   public allCategory: string[] = [];
-  public productsInCart: undefined | string = '0';
+  public shoppingCartQuantity: string | undefined;
   public visible: boolean = false;
+  public value3: number = 1;
+  public productsInCartIds: number[] | null | undefined;
+  public productsInCart: Product[] = [];
   private searchQuery: string | null | undefined;
 
   constructor(
@@ -74,17 +82,6 @@ export class HeaderComponent extends ClearObservable implements OnInit {
   }
 
   ngOnInit() {
-    this.store
-      .select(selectProductsInCart)
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((productsID) => productsID !== null && productsID !== undefined)
-      )
-      .subscribe((productsID) => {
-        this.productsInCart = String(productsID!.length);
-        this.cd.detectChanges();
-      });
-
     this.store
       .select(selectAllProducts)
       .pipe(
@@ -103,16 +100,11 @@ export class HeaderComponent extends ClearObservable implements OnInit {
             }
           });
         }
-        this.cd.markForCheck();
       });
 
     this.searchForm = new FormGroup({
       query: new FormControl(''),
     });
-  }
-
-  showDialog() {
-    this.visible = true;
   }
 
   onSubmit() {
