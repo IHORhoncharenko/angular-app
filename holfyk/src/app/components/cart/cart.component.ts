@@ -54,7 +54,9 @@ export class CartComponent extends ClearObservable implements OnInit {
       .subscribe(([pCart, pAll]) => {
         this.productsInCartIds = pCart;
         this.allProducts = pAll;
-        this.shoppingCartQuantity = String(this.productsInCartIds?.length);
+        if (this.productsInCartIds) {
+          this.shoppingCartQuantity = String(this.productsInCartIds.length);
+        }
 
         if (this.allProducts) {
           this.productsInCart = [];

@@ -1,20 +1,90 @@
+/* Загальні стилі для всіх екранів */
+.wrap-popup-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.wrap-popup-product img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.wrap-popup-product h2 {
+  flex-grow: 1;
+  font-size: 1.5rem;
+  margin: 0 15px;
+}
+
+.p-inputnumber {
+  max-width: 50px;
+}
+
 .btn-popup-cart {
   display: flex;
-  justify-content: end;
-  gap: 2px
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.product-image {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  aspect-ratio: 3/4;
-  padding: 25px;
+.p-button {
+  margin: 0 5px;
 }
 
+/* Адаптивні стилі для екранів шириною менше 768px (мобільні пристрої) */
+@media (max-width: 768px) {
+  .wrap-popup-product {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.wrap-popup-product {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  align-items: center;
+  .wrap-popup-product img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+
+  .wrap-popup-product h2 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+
+  .p-inputnumber {
+    width: 100%;
+    max-width: 100px;
+    margin-bottom: 10px;
+  }
+
+  .btn-popup-cart {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .p-button {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  p-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Адаптивні стилі для екранів шириною менше 1024px (планшети) */
+@media (max-width: 1024px) {
+  p-dialog {
+    width: 90% !important;
+  }
+
+  .wrap-popup-product h2 {
+    font-size: 1.3rem;
+  }
+
+  .p-inputnumber {
+    width: 75px;
+  }
 }
