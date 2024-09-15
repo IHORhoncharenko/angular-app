@@ -19,7 +19,7 @@ import {
   loadProductsToCart,
 } from '../../store/product-store/actions';
 import { selectProductsInCart } from '../../store/product-store/selectors';
-import { filter, takeUntil, tap } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-product-card-preview',
@@ -67,13 +67,28 @@ export class ProductCardPreviewComponent
 
     if (typeof window !== 'undefined') {
       this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-      if (this.productData && this.cart && this.cart.length > 0) {
-        if (this.cart.includes(this.productData.id!)) {
-          this.isBuy = true;
-        }
-
+      if (this.cart) {
         this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
+
+        this.store
+          .select(selectProductsInCart)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((products) => {
+            if (!products || products.length === 0) {
+              this.isBuy = false;
+              this.cd.markForCheck();
+            } else {
+              if (this.productData && products && products.length > 0) {
+                if (products.includes(this.productData.id!)) {
+                  this.isBuy = true;
+                  this.cd.markForCheck();
+                } else {
+                  this.isBuy = false;
+                  this.cd.markForCheck();
+                }
+              }
+            }
+          });
       }
     }
 

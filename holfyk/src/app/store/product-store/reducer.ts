@@ -46,5 +46,17 @@ export const ProductReducer = createReducer(
       ...state,
       productsInCart: productsInCart,
     };
+  }),
+  on(storeActions.clearProductsToCart, (state, { productsInCart }) => {
+    return {
+      ...state,
+      productsInCart: productsInCart,
+    };
+  }),
+  on(storeActions.summTotalPrice, (state, { totalPrice }) => {
+    return {
+      ...state,
+      totalPrice: totalPrice,
+    };
   })
 );

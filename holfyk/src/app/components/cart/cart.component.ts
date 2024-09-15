@@ -5,10 +5,17 @@ import {
   OnInit,
 } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import { NgClass, NgStyle } from '@angular/common';
+import { JsonPipe, NgClass, NgStyle } from '@angular/common';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
-import { FormsModule } from '@angular/forms';
+import {
+  Form,
+  FormControl,
+  FormControlName,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   selectAllProducts,
@@ -17,6 +24,8 @@ import {
 import { combineLatest, filter, forkJoin, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import { Product } from '../../models/product';
+import { clearProductsToCart } from '../../store/product-store/actions';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +37,8 @@ import { Product } from '../../models/product';
     InputNumberModule,
     ButtonModule,
     FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
@@ -35,9 +46,11 @@ import { Product } from '../../models/product';
 })
 export class CartComponent extends ClearObservable implements OnInit {
   public visible: boolean = false;
-  public value3: number = 1;
+  public quantity: number = 1;
   public productsInCart: Product[] = [];
   public shoppingCartQuantity: string | undefined;
+  public totalPrice: number = 0;
+  public totalPriceInCart!: FormGroup;
   private productsInCartIds: number[] | null | undefined;
   private allProducts: Product[] | null | undefined;
 
@@ -46,6 +59,10 @@ export class CartComponent extends ClearObservable implements OnInit {
   }
 
   ngOnInit() {
+    this.totalPriceInCart = new FormGroup({
+      quantity: new FormControl(1),
+    });
+
     combineLatest([
       this.store.select(selectProductsInCart),
       this.store.select(selectAllProducts),
@@ -54,8 +71,12 @@ export class CartComponent extends ClearObservable implements OnInit {
       .subscribe(([pCart, pAll]) => {
         this.productsInCartIds = pCart;
         this.allProducts = pAll;
+        this.totalPrice = 0;
+
         if (this.productsInCartIds) {
           this.shoppingCartQuantity = String(this.productsInCartIds.length);
+        } else {
+          this.shoppingCartQuantity = '0';
         }
 
         if (this.allProducts) {
@@ -67,11 +88,39 @@ export class CartComponent extends ClearObservable implements OnInit {
           });
         }
 
+        if (this.productsInCart) {
+          this.productsInCart.forEach((p) => {
+            this.totalPrice = this.totalPrice + p.price!;
+          });
+        }
+
         this.cd.markForCheck();
       });
   }
 
-  showDialog() {
+  onChange = (pPrice: number) => {
+    let productPrice = pPrice * this.totalPriceInCart.value.quantity;
+    this.totalPrice = this.totalPrice + productPrice;
+    this.cd.markForCheck();
+  };
+
+  showDialog = () => {
     this.visible = true;
-  }
+  };
+
+  clearCart = () => {
+    localStorage.setItem('cart', JSON.stringify([]));
+    this.store.dispatch(clearProductsToCart({ productsInCart: null }));
+    this.cd.markForCheck;
+  };
+
+  clearProductInCart = (id: number) => {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart = cart.filter((p: number) => p !== id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    this.store.dispatch(clearProductsToCart({ productsInCart: cart }));
+    this.cd.markForCheck;
+  };
+
+  saveCart = () => {};
 }

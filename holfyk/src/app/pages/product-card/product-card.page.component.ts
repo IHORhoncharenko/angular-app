@@ -58,7 +58,7 @@ export class ProductCardComponent extends ClearObservable implements OnInit {
         this.product = product;
       });
 
-    this.router.events.subscribe((events) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((events) => {
       if (events instanceof NavigationEnd) {
         if (!events.url.includes('product')) {
           this.store.dispatch(loadProduct({ selectedProduct: null }));

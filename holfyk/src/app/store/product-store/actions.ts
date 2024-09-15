@@ -29,12 +29,12 @@ export const actionSuccess = createAction(
 
 export const loadSearchedProducts = createAction(
   ProductActionType.SearchProducts,
-  props<{ searchedProducts: any[] | null }>()
+  props<{ searchedProducts: Product[] | null }>()
 );
 
 export const loadAllProductsSuccess = createAction(
   ProductActionType.LoadSuccess,
-  props<{ allProducts: any | null }>()
+  props<{ allProducts: Product[] | null }>()
 );
 
 export const loadProduct = createAction(
@@ -55,4 +55,14 @@ export const loadSearchQuery = createAction(
 export const loadProductsToCart = createAction(
   ProductActionType.Load,
   props<{ productsInCart: number[] | null }>()
+);
+
+export const clearProductsToCart = createAction(
+  ProductActionType.Load,
+  props<{ productsInCart: number[] | null }>()
+);
+
+export const summTotalPrice = createAction(
+  ProductActionType.Load,
+  props<{ totalPrice: number | null }>()
 );

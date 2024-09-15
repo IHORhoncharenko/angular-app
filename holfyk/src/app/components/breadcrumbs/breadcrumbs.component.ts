@@ -76,7 +76,7 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
           this.viewState[2].isSearchProducts = true;
           this.viewState[2].searchProducts = searchProducts;
         }
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       });
   }
 

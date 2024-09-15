@@ -1,44 +1,93 @@
-@if(shoppingCartQuantity === '0' ) {
+<!-- shopping-cart.component.html -->
+
 <div>
-  <p-button icon="pi pi-shopping-cart" (onClick)="showDialog()" />
+  @if(shoppingCartQuantity === '0') {
+  <div class="cart-button">
+    <p-button
+      icon="pi pi-shopping-cart"
+      (onClick)="showDialog()"
+      aria-label="Відкрити корзину"
+    ></p-button>
+  </div>
+  } @else {
+  <div class="cart-button">
+    <p-button
+      [badge]="shoppingCartQuantity"
+      icon="pi pi-shopping-cart"
+      (onClick)="showDialog()"
+      aria-label="Відкрити корзину з кількістю товарів"
+    ></p-button>
+  </div>
+  }
 </div>
-} @else{
-<div>
-  <p-button
-    [badge]="shoppingCartQuantity"
-    icon="pi
-      pi-shopping-cart"
-    (onClick)="showDialog()"
-  />
-</div>
-}
 
 <p-dialog
   header="Shopping Cart"
   [modal]="true"
   [(visible)]="visible"
-  [style]="{ width: '75em' }"
+  [style]="{ width: '90vw', maxWidth: '75em' }"
+  [breakpoints]="{ '960px': '95vw' }"
+  class="shopping-cart-dialog"
 >
-  @for (product of productsInCart; track product.id) {
-  <div ngClass="wrap-popup-product">
-    <img ngClass="product-image" [src]="product.image" [alt]="product.title" />
+  <div class="products-container">
+    @for(product of productsInCart; track product.id) {
+    <div class="wrap-popup-product">
+      <img class="product-image" [src]="product.image" [alt]="product.title" />
 
-    <h2>{{ product.title }}</h2>
-    <p-inputNumber
-      [(ngModel)]="value3"
-      [showButtons]="true"
-      buttonLayout="vertical"
-      spinnerMode="vertical"
-      inputId="vertical"
-      decrementButtonClass="p-button-secondary"
-      incrementButtonClass="p-button-secondary"
-      incrementButtonIcon="pi pi-plus"
-      decrementButtonIcon="pi pi-minus"
-    />
+      <div class="product-details">
+        <h2 class="product-title">{{ product.title }}</h2>
+        <span class="product-sku">SKU: {{ product.id }}</span>
+        <form [formGroup]="totalPriceInCart">
+          <span class="product-price">${{ product.price }}</span>
+          <p-inputNumber
+            (onInput)="onChange(product.price!)"
+            formControlName="quantity"
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            spinnerMode="horizontal"
+            inputId="horizontal"
+            decrementButtonClass="p-button-secondary"
+            incrementButtonClass="p-button-secondary"
+            incrementButtonIcon="pi pi-plus"
+            decrementButtonIcon="pi pi-minus"
+            size="1"
+            class="quantity-input"
+            aria-label="Вибір кількості товару"
+          ></p-inputNumber>
+        </form>
+        <p-button
+          label="Clear"
+          (onClick)="clearProductInCart(product.id!)"
+          class="clear-button"
+          aria-label="Видалити товар з корзини"
+        ></p-button>
+      </div>
+    </div>
+    }
   </div>
-  }
-  <div ngClass="btn-popup-cart">
-    <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-    <p-button label="Save" (onClick)="visible = false" />
+
+  <div class="btn-popup-cart">
+    <p-button
+      label="Cancel"
+      severity="secondary"
+      (onClick)="visible = false"
+      class="cancel-button"
+      aria-label="Скасувати"
+    ></p-button>
+    <p-button
+      label="Save"
+      (onClick)="visible = false"
+      class="save-button"
+      aria-label="Зберегти корзину"
+    ></p-button>
+    <p-button
+      label="Clear"
+      (onClick)="clearCart()"
+      class="clear-cart-button"
+      aria-label="Очистити всю корзину"
+    ></p-button>
+    <p>
+      Total price: <span>{{ totalPrice | currency : "USD" }}</span>
+    </p>
   </div>
 </p-dialog>

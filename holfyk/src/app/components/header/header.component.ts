@@ -17,10 +17,7 @@ import {
 } from '@angular/forms';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
-import {
-  selectAllProducts,
-  selectProductsInCart,
-} from '../../store/product-store/selectors';
+import { selectAllProducts } from '../../store/product-store/selectors';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import {
@@ -154,10 +151,6 @@ export class HeaderComponent extends ClearObservable implements OnInit {
 
   openCategory = (category: string) => {
     this.store.dispatch(loadCategory({ selectedCategory: category }));
-    console.log(
-      `%c DISPATCH CATEGORY! ${category}`,
-      `color:red; font-size: 24px`
-    );
 
     this.router.navigateByUrl(
       `/category/${this.validUrlPipe.transform(category)}`

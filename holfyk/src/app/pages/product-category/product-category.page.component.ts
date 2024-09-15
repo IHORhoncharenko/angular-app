@@ -60,17 +60,13 @@ export class ProductCategoryComponent
       )
       .subscribe((selectCategory) => {
         this.choiceCategory = selectCategory;
-        this.cd.detectChanges();
+        this.cd.markForCheck();
       });
 
-    this.router.events.subscribe((events) => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((events) => {
       if (events instanceof NavigationEnd) {
-        if (!events.url.includes('/category')) {
+        if (!events.url.includes('category')) {
           this.store.dispatch(loadCategory({ selectedCategory: null }));
-          console.log(
-            `%c REMOVE CATEGORY! ${events.url}`,
-            `color:red; font-size: 24px`
-          );
         }
       }
     });
