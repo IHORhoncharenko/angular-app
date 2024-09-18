@@ -52,3 +52,18 @@
 
   /* Інші стилі залишаються без змін */
 }
+
+.menu-link {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-link>li>a {
+  display: block;
+  padding: 20px;
+}
+
+.menu-link>li:hover {
+  cursor: pointer;
+  background-color: #ced4da;
+}
