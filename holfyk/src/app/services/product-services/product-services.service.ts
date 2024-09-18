@@ -21,4 +21,8 @@ export class ProductService {
         .pipe(tap((data) => this.cache.set(url, data)));
     }
   };
+
+  clearCache = () => {
+    this.cache.clear();
+  };
 }

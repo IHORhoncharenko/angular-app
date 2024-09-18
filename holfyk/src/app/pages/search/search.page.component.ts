@@ -11,8 +11,6 @@ import { filter, takeUntil } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
-import { NavigationEnd, Router } from '@angular/router';
-import { loadSearchedProducts } from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-search',
@@ -25,11 +23,7 @@ import { loadSearchedProducts } from '../../store/product-store/actions';
 export class SearchComponent extends ClearObservable implements OnInit {
   public searchProducts: Product[] | null | undefined;
 
-  constructor(
-    private store: Store,
-    private cd: ChangeDetectorRef,
-    private router: Router
-  ) {
+  constructor(private store: Store, private cd: ChangeDetectorRef) {
     super();
   }
 

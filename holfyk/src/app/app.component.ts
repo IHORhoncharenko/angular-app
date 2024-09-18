@@ -10,9 +10,12 @@ import { HeaderComponent } from './components/header/header.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { Store } from '@ngrx/store';
 import {
+  loadAllProducts,
   loadCategory,
   loadProduct,
   loadProductsToCart,
+  loadSearchedProducts,
+  loadSearchQuery,
 } from './store/product-store/actions';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from './abstract/clear-observers.abstract';
@@ -42,6 +45,8 @@ export class AppComponent extends ClearObservable {
   }
 
   ngOnInit() {
+    this.store.dispatch(loadAllProducts());
+
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd), // Фільтруємо події NavigationEnd
@@ -50,9 +55,28 @@ export class AppComponent extends ClearObservable {
       .subscribe((e: NavigationEnd) => {
         if (!e.url.includes('category')) {
           this.store.dispatch(loadCategory({ selectedCategory: null }));
+          console.log(
+            `%c ProductState >>> selectedCategory: null`,
+            `color: red; font-weight: 700`,
+            e.url
+          );
         }
         if (!e.url.includes('product')) {
           this.store.dispatch(loadProduct({ selectedProduct: null }));
+          console.log(
+            `%c ProductState >>> selectedProduct: null`,
+            `color: red; font-weight: 700`,
+            e.url
+          );
+        }
+        if (!e.url.includes('search')) {
+          this.store.dispatch(loadSearchQuery({ searchQuery: null }));
+          this.store.dispatch(loadSearchedProducts({ searchedProducts: null }));
+          console.log(
+            `%c ProductState >>> searchQuery: null && searchedProducts: null`,
+            `color: red; font-weight: 700`,
+            e.url
+          );
         }
       });
 
@@ -60,7 +84,11 @@ export class AppComponent extends ClearObservable {
       this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
       if (this.cart) {
         this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
-        console.log(this.cart);
+        console.log(
+          `%c Product in cart >>> sku`,
+          `color: green; font-weight: 700`,
+          this.cart
+        );
       }
     }
   }

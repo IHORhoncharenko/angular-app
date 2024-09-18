@@ -7,7 +7,6 @@ import {
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { NgIf } from '@angular/common';
 import { NgClass } from '@angular/common';
-import { MenuItem } from 'primeng/api';
 import { Product } from '../../models/product';
 import { Store } from '@ngrx/store';
 import {
@@ -15,7 +14,7 @@ import {
   selectProduct,
   selectSearchProducts,
 } from '../../store/product-store/selectors';
-import { combineLatest, filter, forkJoin, takeUntil, tap } from 'rxjs';
+import { combineLatest, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import { Router } from '@angular/router';
 import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';

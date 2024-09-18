@@ -1,12 +1,6 @@
 /* shopping-cart.component.css */
 
 /* Основні стилі */
-.cart-button {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-}
-
 .shopping-cart-dialog .products-container {
   display: flex;
   flex-direction: column;

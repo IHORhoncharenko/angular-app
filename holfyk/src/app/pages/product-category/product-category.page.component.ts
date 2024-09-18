@@ -15,8 +15,6 @@ import { concatMap, filter, takeUntil, tap } from 'rxjs';
 import { ProductCardPreviewComponent } from '../../components/product-card-preview/product-card-preview.component';
 import { FilterComponent } from '../../components/filter/filter.component';
 import { BreadcrumbsComponent } from '../../components/breadcrumbs/breadcrumbs.component';
-import { NavigationEnd, Router } from '@angular/router';
-import { loadCategory } from '../../store/product-store/actions';
 
 @Component({
   selector: 'app-product-category',
@@ -33,11 +31,7 @@ export class ProductCategoryComponent
   public allProducts: Product[] | null | undefined;
   public choiceCategory: string | null | undefined;
 
-  constructor(
-    private store: Store,
-    private cd: ChangeDetectorRef,
-    private router: Router
-  ) {
+  constructor(private store: Store, private cd: ChangeDetectorRef) {
     super();
   }
 
@@ -62,13 +56,5 @@ export class ProductCategoryComponent
         this.choiceCategory = selectCategory;
         this.cd.markForCheck();
       });
-
-    this.router.events.pipe(takeUntil(this.destroy$)).subscribe((events) => {
-      if (events instanceof NavigationEnd) {
-        if (!events.url.includes('category')) {
-          this.store.dispatch(loadCategory({ selectedCategory: null }));
-        }
-      }
-    });
   }
 }
