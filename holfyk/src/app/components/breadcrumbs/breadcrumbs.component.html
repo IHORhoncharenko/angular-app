@@ -1,6 +1,4 @@
-@if(viewState[0].isCategory || viewState[1].isProduct ||
-viewState[2].isSearchProducts){ @if(viewState[1].isProduct){
-
+@for (status of viewState; track $index) { @if(status.isHome){
 <nav class="breadcrumbs">
   <ol>
     <li>
@@ -8,54 +6,49 @@ viewState[2].isSearchProducts){ @if(viewState[1].isProduct){
         ><span class="pi pi-home"></span
       ></a>
     </li>
-
-    @if(viewState[1].product.category){
+  </ol>
+</nav>
+} @if(status.isCategory){
+<nav class="breadcrumbs">
+  <ol>
     <li>
-      <a (click)="openCategory(viewState[1].product.category)">{{
-        viewState[1].product.category
-      }}</a>
+      <a [routerLink]="['/']" routerLinkActive="router-link-active"
+        ><span class="pi pi-home"></span
+      ></a>
+    </li>
+    <li>{{ status.category }}</li>
+  </ol>
+</nav>
+} @if(status.isSearchProducts){
+<nav class="breadcrumbs">
+  <ol>
+    <li>
+      <a [routerLink]="['/']" routerLinkActive="router-link-active"
+        ><span class="pi pi-home"></span
+      ></a>
+    </li>
+    <li>Пошук</li>
+  </ol>
+</nav>
+} @if(status.isProduct){
+<nav class="breadcrumbs">
+  <ol>
+    <li>
+      <a [routerLink]="['/']" routerLinkActive="router-link-active"
+        ><span class="pi pi-home"></span
+      ></a>
+    </li>
+    @if(status.product.category){
+    <li>
+      <a
+        (click)="openCategory(status.product.category)"
+        routerLinkActive="router-link-active"
+      >
+        {{ status.product.category }}
+      </a>
     </li>
     }
-
-    <li>{{ viewState[1].product.title }}</li>
+    <li>{{ status.product.title }}</li>
   </ol>
 </nav>
-
-} @if(viewState[0].isCategory){
-
-<nav class="breadcrumbs">
-  <ol>
-    <li>
-      <a [routerLink]="['/']" routerLinkActive="router-link-active"
-        ><span class="pi pi-home"></span
-      ></a>
-    </li>
-    <li>{{ viewState[0].category }}</li>
-  </ol>
-</nav>
-
-} @if(viewState[2].isSearchProducts){
-<div>
-  <nav>
-    <ol>
-      <li>
-        <a [routerLink]="['/']" routerLinkActive="router-link-active"
-          ><span class="pi pi-home"></span
-        ></a>
-      </li>
-    </ol>
-  </nav>
-</div>
-} } @else{
-<div>
-  <nav>
-    <ol>
-      <li>
-        <a [routerLink]="['/']" routerLinkActive="router-link-active"
-          ><span class="pi pi-home"></span
-        ></a>
-      </li>
-    </ol>
-  </nav>
-</div>
-}
+} }

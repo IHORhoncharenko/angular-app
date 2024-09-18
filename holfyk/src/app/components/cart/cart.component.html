@@ -37,24 +37,20 @@
       <div class="product-details">
         <h2 class="product-title">{{ product.title }}</h2>
         <span class="product-sku">SKU: {{ product.id }}</span>
+        <span class="product-price">${{ product.price }}</span>
+        @if(product.price){
         <form [formGroup]="totalPriceInCart">
-          <span class="product-price">${{ product.price }}</span>
-          <p-inputNumber
-            (onInput)="onChange(product.price!)"
+          <input
+            min="1"
+            (input)="onChange(product.price)"
             formControlName="quantity"
-            [showButtons]="true"
-            buttonLayout="horizontal"
-            spinnerMode="horizontal"
-            inputId="horizontal"
-            decrementButtonClass="p-button-secondary"
-            incrementButtonClass="p-button-secondary"
-            incrementButtonIcon="pi pi-plus"
-            decrementButtonIcon="pi pi-minus"
-            size="1"
-            class="quantity-input"
-            aria-label="Вибір кількості товару"
-          ></p-inputNumber>
+            type="number"
+            name="quantity"
+            id="quantity"
+          />
         </form>
+        }
+
         <p-button
           label="Clear"
           (onClick)="clearProductInCart(product.id!)"

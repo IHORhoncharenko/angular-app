@@ -7,7 +7,7 @@ export interface ProductState {
   searchQuery?: string | null;
   searchedProducts?: Product[] | null;
   productsInCart?: number[] | null;
-  totalPrice?: number | null;
+  totalPrice?: number[] | null;
 }
 
 export const initialState: ProductState = {

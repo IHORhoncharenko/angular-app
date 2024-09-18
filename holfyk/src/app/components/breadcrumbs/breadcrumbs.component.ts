@@ -17,7 +17,7 @@ import {
 } from '../../store/product-store/selectors';
 import { combineLatest, filter, forkJoin, takeUntil, tap } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
 import { loadCategory } from '../../store/product-store/actions';
 
@@ -37,12 +37,13 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
     },
     {
       isProduct: false,
-      pathCategory: '',
       product: {} as Product,
     },
     {
       isSearchProducts: false,
-      searchProducts: {},
+    },
+    {
+      isHome: false,
     },
   ];
 
@@ -70,12 +71,14 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
         if (product) {
           this.viewState[1].isProduct = true;
           this.viewState[1].product = product;
-          this.viewState[1].pathCategory = `category/${product.category}`;
         }
         if (searchProducts) {
           this.viewState[2].isSearchProducts = true;
-          this.viewState[2].searchProducts = searchProducts;
         }
+        if (!searchProducts && !product && !category) {
+          this.viewState[3].isHome = true;
+        }
+
         this.cd.markForCheck();
       });
   }
@@ -86,5 +89,7 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
     this.router.navigateByUrl(
       `/category/${this.validUrlPipe.transform(category)}`
     );
+
+    this.cd.markForCheck();
   };
 }

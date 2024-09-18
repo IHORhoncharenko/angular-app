@@ -11,8 +11,11 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { Store } from '@ngrx/store';
 import {
   loadCategory,
+  loadProduct,
   loadProductsToCart,
 } from './store/product-store/actions';
+import { filter, takeUntil } from 'rxjs';
+import { ClearObservable } from './abstract/clear-observers.abstract';
 
 @Component({
   selector: 'app-root',
@@ -31,23 +34,27 @@ import {
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent extends ClearObservable {
   private cart: number[] | null | undefined;
 
-  constructor(private router: Router, private store: Store) {}
+  constructor(private router: Router, private store: Store) {
+    super();
+  }
 
   ngOnInit() {
-    // this.router.events.subscribe((events) => {
-    //   if (events instanceof NavigationEnd) {
-    //     if (events.url.includes('/category')) {
-    //       this.store.dispatch(
-    //         loadCategory({
-    //           selectedCategory: events.url.split('/').reverse()[0],
-    //         })
-    //       );
-    //     }
-    //   }
-    // });
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd), // Фільтруємо події NavigationEnd
+        takeUntil(this.destroy$)
+      )
+      .subscribe((e: NavigationEnd) => {
+        if (!e.url.includes('category')) {
+          this.store.dispatch(loadCategory({ selectedCategory: null }));
+        }
+        if (!e.url.includes('product')) {
+          this.store.dispatch(loadProduct({ selectedProduct: null }));
+        }
+      });
 
     if (typeof window !== 'undefined') {
       this.cart = JSON.parse(localStorage.getItem('cart') || '[]');

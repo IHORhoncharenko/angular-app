@@ -3,6 +3,7 @@ import { Product } from '../../models/product';
 
 export enum ProductActionType {
   Load = '[Product Component] Load',
+  LoadCategory = '[Category Component] Load',
   SearchProducts = '[Product Component] Search Product',
   UpdateProduct = '[Product Component] Update Product',
   CreateProduct = '[Product Component] Create Product',
@@ -43,7 +44,7 @@ export const loadProduct = createAction(
 );
 
 export const loadCategory = createAction(
-  ProductActionType.Load,
+  ProductActionType.LoadCategory,
   props<{ selectedCategory: string | null }>()
 );
 
@@ -64,5 +65,5 @@ export const clearProductsToCart = createAction(
 
 export const summTotalPrice = createAction(
   ProductActionType.Load,
-  props<{ totalPrice: number | null }>()
+  props<{ totalPrice: number[] | null }>()
 );

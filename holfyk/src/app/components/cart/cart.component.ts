@@ -14,17 +14,24 @@ import {
   FormControlName,
   FormGroup,
   FormsModule,
+  MinValidator,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   selectAllProducts,
   selectProductsInCart,
+  selectTotalPrice,
 } from '../../store/product-store/selectors';
 import { combineLatest, filter, forkJoin, takeUntil } from 'rxjs';
 import { ClearObservable } from '../../abstract/clear-observers.abstract';
 import { Product } from '../../models/product';
-import { clearProductsToCart } from '../../store/product-store/actions';
+import {
+  clearProductsToCart,
+  loadProductsToCart,
+  summTotalPrice,
+} from '../../store/product-store/actions';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -60,7 +67,7 @@ export class CartComponent extends ClearObservable implements OnInit {
 
   ngOnInit() {
     this.totalPriceInCart = new FormGroup({
-      quantity: new FormControl(1),
+      quantity: new FormControl(1, Validators.min(1)),
     });
 
     combineLatest([
@@ -99,9 +106,21 @@ export class CartComponent extends ClearObservable implements OnInit {
   }
 
   onChange = (pPrice: number) => {
-    let productPrice = pPrice * this.totalPriceInCart.value.quantity;
-    this.totalPrice = this.totalPrice + productPrice;
-    this.cd.markForCheck();
+    // let productPrice = 0;
+    // productPrice = pPrice * this.totalPriceInCart.value.quantity;
+    // this.store.dispatch(summTotalPrice({ totalPrice: Array.of(productPrice) }));
+    // console.log(productPrice);
+    // this.store
+    //   .select(selectTotalPrice)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((price) => {
+    //     console.log(price);
+    //     if (price) {
+    //       price.forEach((e) => {
+    //         this.totalPrice += e;
+    //       });
+    //     }
+    //   });
   };
 
   showDialog = () => {
