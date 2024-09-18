@@ -8,7 +8,7 @@
               image="../../../assets/android-chrome-512x512.png"
               shape="circle"
             />
-            <h1 class="font-bold">Holfyk in UA</h1>
+            <p class="font-bold">Holfyk in UA</p>
           </div>
         </ng-template>
         @if(allCategory){
@@ -23,27 +23,31 @@
         </ul>
         }
       </p-sidebar>
-      <p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-right" />
+      <p-button
+        class="menu"
+        (onClick)="sidebarVisible = true"
+        icon="pi pi-arrow-right"
+      />
     </div>
-    <p class="header-label">
+    <h1 class="header-label">
       <a
         style="text-decoration: none"
         [routerLink]="['/']"
         routerLinkActive="router-link-active"
         >Holfyk in UA</a
       >
-    </p>
+    </h1>
 
     @if(searchForm){
     <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
       <input
         id="searchInput"
-        placeholder="find your favorite holfyk..."
+        placeholder="Знайди свій улюблений гольфик..."
         formControlName="query"
         type="search"
       />
     </form>
     }
-    <app-cart></app-cart>
+    <app-cart class="cart"></app-cart>
   </div>
 </div>

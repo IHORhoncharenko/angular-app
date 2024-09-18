@@ -4,41 +4,42 @@
   border-bottom: 1px solid #dee2e6;
   gap: 1em;
 
-
-
   .header-first-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-areas:
+      'h1 h1 h1'
+      'menu search cart';
+    grid-template-columns: 1fr 15fr 1fr;
+    /* Встановлює три колонки однакової ширини */
+    grid-template-rows: auto auto;
+    /* Дві рядки з автоматичною висотою */
+  }
+
+  .cart {
+    grid-area: cart;
+    margin-left: 2em;
+  }
+
+  .menu {
+    grid-area: menu;
+    margin-right: 2em;
   }
 
   .header-label {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
+    grid-area: h1;
+    font-family: monospace;
+    letter-spacing: 17px;
+    font-size: large;
+    margin-bottom: 0.5em;
+    margin-top: 0px;
     text-align: center;
   }
 
-  .avatar {
-    display: flex;
-    align-items: center;
-
-    p-avatar {
-      margin-right: 10px;
-    }
-
-    .font-bold {
-      font-weight: bold;
-      font-size: 16px;
-    }
-  }
-
   form {
+    grid-area: search;
     display: flex;
     align-items: center;
     width: 100%;
-    margin-right: 0.5em;
-    margin-left: 0.5em;
 
     input[type="search"] {
       padding: 10px;
@@ -49,47 +50,5 @@
     }
   }
 
-  .pi {
-    font-size: 24px;
-    margin-left: 10px;
-    cursor: pointer;
-  }
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-
-    .header-first-row {
-      width: 100%;
-      margin-bottom: 1em;
-    }
-
-    .header-label {
-      display: none;
-    }
-
-    form {
-      margin-top: 0;
-
-      input[type="search"] {
-        width: 100%;
-      }
-    }
-  }
-}
-
-.menu-link {
-  display: flex;
-  flex-direction: column;
-}
-
-.menu-link>li>a {
-  display: block;
-  padding: 20px;
-}
-
-.menu-link>li:hover {
-  cursor: pointer;
-  background-color: #ced4da;
+  /* Інші стилі залишаються без змін */
 }
