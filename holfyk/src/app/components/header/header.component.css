@@ -10,9 +10,7 @@
       'h1 h1 h1'
       'menu search cart';
     grid-template-columns: 1fr 15fr 1fr;
-    /* Встановлює три колонки однакової ширини */
     grid-template-rows: auto auto;
-    /* Дві рядки з автоматичною висотою */
   }
 
   .cart {
@@ -29,7 +27,7 @@
     grid-area: h1;
     font-family: monospace;
     letter-spacing: 17px;
-    font-size: large;
+    font-size: 15px;
     margin-bottom: 0.5em;
     margin-top: 0px;
     text-align: center;
@@ -50,20 +48,27 @@
     }
   }
 
+  .menu-link {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu-link>li>a {
+    display: block;
+    padding: 20px;
+  }
+
+  .menu-link>li:hover {
+    cursor: pointer;
+    background-color: #ced4da;
+  }
+
+  @media (max-width: 480px) {
+    .header-label {
+      font-size: 12px;
+      letter-spacing: 12px
+    }
+  }
+
   /* Інші стилі залишаються без змін */
-}
-
-.menu-link {
-  display: flex;
-  flex-direction: column;
-}
-
-.menu-link>li>a {
-  display: block;
-  padding: 20px;
-}
-
-.menu-link>li:hover {
-  cursor: pointer;
-  background-color: #ced4da;
 }
