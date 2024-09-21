@@ -65,7 +65,6 @@ export class AppComponent extends ClearObservable {
       .subscribe((e: NavigationEnd) => {
         if (!e.url.includes("category")) {
           this.store.dispatch(loadCategory({ selectedCategory: null }));
-          this.cd.detectChanges();
           console.log(
             `%c ProductState >>> selectedCategory: null`,
             `color: red; font-weight: 700`,
@@ -74,7 +73,6 @@ export class AppComponent extends ClearObservable {
         }
         if (!e.url.includes("product")) {
           this.store.dispatch(loadProduct({ selectedProduct: null }));
-          this.cd.detectChanges();
           console.log(
             `%c ProductState >>> selectedProduct: null`,
             `color: red; font-weight: 700`,
@@ -84,13 +82,14 @@ export class AppComponent extends ClearObservable {
         if (!e.url.includes("search")) {
           this.store.dispatch(loadSearchQuery({ searchQuery: null }));
           this.store.dispatch(loadSearchedProducts({ searchedProducts: null }));
-          this.cd.detectChanges();
           console.log(
             `%c ProductState >>> searchQuery: null && searchedProducts: null`,
             `color: red; font-weight: 700`,
             e.url,
           );
         }
+
+        this.cd.markForCheck();
       });
 
     if (typeof window !== "undefined") {

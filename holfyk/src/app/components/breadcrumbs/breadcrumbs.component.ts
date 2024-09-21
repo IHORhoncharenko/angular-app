@@ -28,22 +28,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbsComponent extends ClearObservable implements OnInit {
-  public viewState = [
-    {
-      isCategory: false,
-      category: "",
-    },
-    {
-      isProduct: false,
-      product: {} as Product,
-    },
-    {
-      isSearchProducts: false,
-    },
-    {
-      isHome: false,
-    },
-  ];
+  public viewState = {
+    isCategory: false,
+    category: "",
+    isProduct: false,
+    product: {} as Product,
+    isSearchProducts: false,
+    isHome: false,
+  };
 
   constructor(
     private store: Store,
@@ -62,25 +54,29 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([category, product, searchProducts]) => {
+        // Скидаємо всі стани до початкового значення
+        this.viewState.isCategory = false;
+        this.viewState.isProduct = false;
+        this.viewState.isSearchProducts = false;
+        this.viewState.isHome = false;
+
+        // Оновлюємо стани в залежності від отриманих даних
         if (category) {
-          this.viewState[0].isCategory = true;
-          this.viewState[0].category = category;
-          this.cd.detectChanges();
+          this.viewState.isCategory = true;
+          this.viewState.category = category;
         }
         if (product) {
-          this.viewState[1].isProduct = true;
-          this.viewState[1].product = product;
-          this.cd.detectChanges();
+          this.viewState.isProduct = true;
+          this.viewState.product = product;
         }
         if (searchProducts) {
-          this.viewState[2].isSearchProducts = true;
-          this.cd.detectChanges();
+          this.viewState.isSearchProducts = true;
         }
         if (!searchProducts && !product && !category) {
-          this.viewState[3].isHome = true;
-          this.cd.detectChanges();
+          this.viewState.isHome = true;
         }
-        this.cd.detectChanges();
+
+        this.cd.markForCheck();
       });
   }
 
