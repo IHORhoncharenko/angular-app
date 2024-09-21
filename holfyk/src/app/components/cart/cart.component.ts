@@ -116,7 +116,6 @@ export class CartComponent extends ClearObservable implements OnInit {
   saveCart = () => {};
 
   receiveValue = (value: number) => {
-    let productPriceSum = value;
-    console.log(productPriceSum);
+    this.totalPrice = 0;
   };
 }

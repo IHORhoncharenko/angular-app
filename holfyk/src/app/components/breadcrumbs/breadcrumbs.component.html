@@ -1,54 +1,59 @@
-@for (status of viewState; track $index) { @if(status.isHome){
-<nav class="breadcrumbs">
-  <ol>
-    <li>
-      <a [routerLink]="['/']" routerLinkActive="router-link-active"
-        ><span class="pi pi-home"> Гольфи жіночі </span></a
-      >
-    </li>
-  </ol>
-</nav>
-} @if(status.isCategory){
-<nav class="breadcrumbs">
-  <ol>
-    <li>
-      <a [routerLink]="['/']" routerLinkActive="router-link-active"
-        ><span class="pi pi-home"></span
-      ></a>
-    </li>
-    <li>{{ status.category }}</li>
-  </ol>
-</nav>
-} @if(status.isSearchProducts){
-<nav class="breadcrumbs">
-  <ol>
-    <li>
-      <a [routerLink]="['/']" routerLinkActive="router-link-active"
-        ><span class="pi pi-home"></span
-      ></a>
-    </li>
-    <li>Пошук</li>
-  </ol>
-</nav>
-} @if(status.isProduct){
-<nav class="breadcrumbs">
-  <ol>
-    <li>
-      <a [routerLink]="['/']" routerLinkActive="router-link-active"
-        ><span class="pi pi-home"></span
-      ></a>
-    </li>
-    @if(status.product.category){
-    <li>
-      <a
-        (click)="openCategory(status.product.category)"
-        routerLinkActive="router-link-active"
-      >
-        {{ status.product.category }}
-      </a>
-    </li>
-    }
-    <li>{{ status.product.title }}</li>
-  </ol>
-</nav>
-} }
+@for (status of viewState; track $index) {
+  @if (status.isHome) {
+    <nav class="breadcrumbs">
+      <ol>
+        <li>
+          <a [routerLink]="['/']" routerLinkActive="router-link-active"
+            ><span class="pi pi-home"> Гольфи жіночі </span></a
+          >
+        </li>
+      </ol>
+    </nav>
+  }
+  @if (status.isCategory) {
+    <nav class="breadcrumbs">
+      <ol>
+        <li>
+          <a [routerLink]="['/']" routerLinkActive="router-link-active"
+            ><span class="pi pi-home"></span
+          ></a>
+        </li>
+        <li>{{ status.category }}</li>
+      </ol>
+    </nav>
+  }
+  @if (status.isSearchProducts) {
+    <nav class="breadcrumbs">
+      <ol>
+        <li>
+          <a [routerLink]="['/']" routerLinkActive="router-link-active"
+            ><span class="pi pi-home"></span
+          ></a>
+        </li>
+        <li>Пошук</li>
+      </ol>
+    </nav>
+  }
+  @if (status.isProduct) {
+    <nav class="breadcrumbs">
+      <ol>
+        <li>
+          <a [routerLink]="['/']" routerLinkActive="router-link-active"
+            ><span class="pi pi-home"></span
+          ></a>
+        </li>
+        @if (status.product.category) {
+          <li>
+            <a
+              (click)="openCategory(status.product.category)"
+              routerLinkActive="router-link-active"
+            >
+              {{ status.product.category }}
+            </a>
+          </li>
+        }
+        <li>{{ status.product.title }}</li>
+      </ol>
+    </nav>
+  }
+}

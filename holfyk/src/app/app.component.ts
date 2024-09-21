@@ -1,28 +1,31 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { ProductCardPreviewComponent } from './components/product-card-preview/product-card-preview.component';
-import { Product } from './models/product';
-import { SidebarModule } from 'primeng/sidebar';
-import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
-import { HeaderComponent } from './components/header/header.component';
-import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
-import { Store } from '@ngrx/store';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from "@angular/core";
+import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { AvatarModule } from "primeng/avatar";
+import { AvatarGroupModule } from "primeng/avatargroup";
+import { ButtonModule } from "primeng/button";
+import { SidebarModule } from "primeng/sidebar";
+import { filter, takeUntil } from "rxjs";
+import { ClearObservable } from "./abstract/clear-observers.abstract";
+import { BreadcrumbsComponent } from "./components/breadcrumbs/breadcrumbs.component";
+import { HeaderComponent } from "./components/header/header.component";
+import { ProductCardPreviewComponent } from "./components/product-card-preview/product-card-preview.component";
+import { SortComponent } from "./components/sort/sort.component";
 import {
   loadAllProducts,
   loadCategory,
   loadProduct,
   loadProductsToCart,
-  loadSearchedProducts,
   loadSearchQuery,
-} from './store/product-store/actions';
-import { filter, takeUntil } from 'rxjs';
-import { ClearObservable } from './abstract/clear-observers.abstract';
-import { SortComponent } from './components/sort/sort.component';
+  loadSearchedProducts,
+} from "./store/product-store/actions";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
   imports: [
     RouterOutlet,
@@ -35,15 +38,19 @@ import { SortComponent } from './components/sort/sort.component';
     BreadcrumbsComponent,
     SortComponent,
   ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent extends ClearObservable {
   public isSortShow: boolean | null | undefined;
   private cart: number[] | null | undefined;
 
-  constructor(private router: Router, private store: Store, private cd: ChangeDetectorRef) {
+  constructor(
+    private router: Router,
+    private store: Store,
+    private cd: ChangeDetectorRef,
+  ) {
     super();
   }
 
@@ -53,54 +60,54 @@ export class AppComponent extends ClearObservable {
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd), // Фільтруємо події NavigationEnd
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((e: NavigationEnd) => {
-        if (!e.url.includes('category')) {
+        if (!e.url.includes("category")) {
           this.store.dispatch(loadCategory({ selectedCategory: null }));
-          this.cd.markForCheck()
+          this.cd.detectChanges();
           console.log(
             `%c ProductState >>> selectedCategory: null`,
             `color: red; font-weight: 700`,
-            e.url
+            e.url,
           );
         }
-        if (!e.url.includes('product')) {
+        if (!e.url.includes("product")) {
           this.store.dispatch(loadProduct({ selectedProduct: null }));
-           this.cd.markForCheck()
+          this.cd.detectChanges();
           console.log(
             `%c ProductState >>> selectedProduct: null`,
             `color: red; font-weight: 700`,
-            e.url
+            e.url,
           );
         }
-        if (!e.url.includes('search')) {
+        if (!e.url.includes("search")) {
           this.store.dispatch(loadSearchQuery({ searchQuery: null }));
           this.store.dispatch(loadSearchedProducts({ searchedProducts: null }));
-           this.cd.markForCheck()
+          this.cd.detectChanges();
           console.log(
             `%c ProductState >>> searchQuery: null && searchedProducts: null`,
             `color: red; font-weight: 700`,
-            e.url
+            e.url,
           );
         }
       });
 
-    if (typeof window !== 'undefined') {
-      this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (typeof window !== "undefined") {
+      this.cart = JSON.parse(localStorage.getItem("cart") || "[]");
       if (this.cart) {
         this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
         console.log(
           `%c Product in cart >>> sku`,
           `color: green; font-weight: 700`,
-          this.cart
+          this.cart,
         );
       }
     }
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        if (!event.url.includes('/product/')) {
+        if (!event.url.includes("/product/")) {
           this.isSortShow = true;
         } else {
           this.isSortShow = false;

@@ -1,29 +1,28 @@
+import { NgClass, NgIf } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
-} from '@angular/core';
-import { BreadcrumbModule } from 'primeng/breadcrumb';
-import { NgIf } from '@angular/common';
-import { NgClass } from '@angular/common';
-import { Product } from '../../models/product';
-import { Store } from '@ngrx/store';
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { BreadcrumbModule } from "primeng/breadcrumb";
+import { combineLatest, takeUntil } from "rxjs";
+import { ClearObservable } from "../../abstract/clear-observers.abstract";
+import { Product } from "../../models/product";
+import { ValidUrlPipe } from "../../pipes/valid-url/valid-url.pipe";
+import { loadCategory } from "../../store/product-store/actions";
 import {
   selectCategory,
   selectProduct,
   selectSearchProducts,
-} from '../../store/product-store/selectors';
-import { combineLatest, takeUntil } from 'rxjs';
-import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { Router } from '@angular/router';
-import { ValidUrlPipe } from '../../pipes/valid-url/valid-url.pipe';
-import { loadCategory } from '../../store/product-store/actions';
+} from "../../store/product-store/selectors";
 
 @Component({
-  selector: 'app-breadcrumbs',
-  templateUrl: './breadcrumbs.component.html',
-  styleUrls: ['./breadcrumbs.component.css'],
+  selector: "app-breadcrumbs",
+  templateUrl: "./breadcrumbs.component.html",
+  styleUrls: ["./breadcrumbs.component.css"],
   standalone: true,
   imports: [BreadcrumbModule, NgIf, NgClass, ValidUrlPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +31,7 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
   public viewState = [
     {
       isCategory: false,
-      category: '',
+      category: "",
     },
     {
       isProduct: false,
@@ -50,7 +49,7 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
     private store: Store,
     private cd: ChangeDetectorRef,
     private router: Router,
-    private validUrlPipe: ValidUrlPipe
+    private validUrlPipe: ValidUrlPipe,
   ) {
     super();
   }
@@ -81,6 +80,7 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
           this.viewState[3].isHome = true;
           this.cd.detectChanges();
         }
+        this.cd.detectChanges();
       });
   }
 
@@ -88,7 +88,7 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
     this.store.dispatch(loadCategory({ selectedCategory: category }));
 
     this.router.navigateByUrl(
-      `/category/${this.validUrlPipe.transform(category)}`
+      `/category/${this.validUrlPipe.transform(category)}`,
     );
 
     this.cd.markForCheck();
