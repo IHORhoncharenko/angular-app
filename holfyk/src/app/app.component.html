@@ -3,6 +3,10 @@
 </header>
 
 <div class="main">
+  <app-breadcrumbs></app-breadcrumbs>
+  @if (isSortShow) {
+  <app-sort></app-sort>
+  }
   <router-outlet></router-outlet>
 </div>
 

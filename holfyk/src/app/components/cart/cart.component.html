@@ -1,23 +1,23 @@
 <!-- shopping-cart.component.html -->
 
 <div>
-  @if(shoppingCartQuantity === '0') {
-  <div class="cart-button">
-    <p-button
-      icon="pi pi-shopping-cart"
-      (onClick)="showDialog()"
-      aria-label="Відкрити корзину"
-    ></p-button>
-  </div>
+  @if (shoppingCartQuantity === "0") {
+    <div class="cart-button">
+      <p-button
+        icon="pi pi-shopping-cart"
+        (onClick)="showDialog()"
+        aria-label="Відкрити корзину"
+      ></p-button>
+    </div>
   } @else {
-  <div class="cart-button">
-    <p-button
-      [badge]="shoppingCartQuantity"
-      icon="pi pi-shopping-cart"
-      (onClick)="showDialog()"
-      aria-label="Відкрити корзину з кількістю товарів"
-    ></p-button>
-  </div>
+    <div class="cart-button">
+      <p-button
+        [badge]="shoppingCartQuantity"
+        icon="pi pi-shopping-cart"
+        (onClick)="showDialog()"
+        aria-label="Відкрити корзину з кількістю товарів"
+      ></p-button>
+    </div>
   }
 </div>
 
@@ -30,35 +30,11 @@
   class="shopping-cart-dialog"
 >
   <div class="products-container">
-    @for(product of productsInCart; track product.id) {
-    <div class="wrap-popup-product">
-      <img class="product-image" [src]="product.image" [alt]="product.title" />
-
-      <div class="product-details">
-        <h2 class="product-title">{{ product.title }}</h2>
-        <span class="product-sku">SKU: {{ product.id }}</span>
-        <span class="product-price">${{ product.price }}</span>
-        @if(product.price){
-        <form [formGroup]="totalPriceInCart">
-          <input
-            min="1"
-            (input)="onChange(product.price)"
-            formControlName="quantity"
-            type="number"
-            name="quantity"
-            id="quantity"
-          />
-        </form>
-        }
-
-        <p-button
-          label="Clear"
-          (onClick)="clearProductInCart(product.id!)"
-          class="clear-button"
-          aria-label="Видалити товар з корзини"
-        ></p-button>
-      </div>
-    </div>
+    @for (product of productsInCart; track product.id) {
+      <app-product-prev-cart
+        (valueEmitter)="receiveValue($event)"
+        [productData]="product"
+      ></app-product-prev-cart>
     }
   </div>
 
@@ -83,7 +59,7 @@
       aria-label="Очистити всю корзину"
     ></p-button>
     <p>
-      Total price: <span>{{ totalPrice | currency : "USD" }}</span>
+      Total price: <span>{{ totalPrice | currency: "USD" }}</span>
     </p>
   </div>
 </p-dialog>

@@ -66,19 +66,21 @@ export class BreadcrumbsComponent extends ClearObservable implements OnInit {
         if (category) {
           this.viewState[0].isCategory = true;
           this.viewState[0].category = category;
+          this.cd.detectChanges();
         }
         if (product) {
           this.viewState[1].isProduct = true;
           this.viewState[1].product = product;
+          this.cd.detectChanges();
         }
         if (searchProducts) {
           this.viewState[2].isSearchProducts = true;
+          this.cd.detectChanges();
         }
         if (!searchProducts && !product && !category) {
           this.viewState[3].isHome = true;
+          this.cd.detectChanges();
         }
-
-        this.cd.markForCheck();
       });
   }
 

@@ -1,0 +1,35 @@
+@if (productData) {
+  <div class="wrap-popup-product">
+    <img
+      class="product-image"
+      [src]="productData.image"
+      [alt]="productData.title"
+    />
+
+    <div class="product-details">
+      <h2 class="product-title">{{ productData.title }}</h2>
+      <span class="product-sku">SKU: {{ productData.id }}</span>
+      <span class="product-price">${{ productData.price }}</span>
+      @if (productData.price && productData.id) {
+        <form [formGroup]="totalPriceInCart">
+          <input
+            (change)="changeQuantity(productData.price); emitEvent()"
+            min="1"
+            formControlName="quantity"
+            type="number"
+            name="quantity"
+            id="quantity"
+          />
+          <span>{{ sumPrice | currency: "USD" }}</span>
+        </form>
+      }
+
+      <p-button
+        (onClick)="clearProductInCart(productData.id!)"
+        label="Clear"
+        class="clear-button"
+        aria-label="Видалити товар з корзини"
+      ></p-button>
+    </div>
+  </div>
+}

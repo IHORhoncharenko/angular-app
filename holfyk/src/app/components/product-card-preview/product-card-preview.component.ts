@@ -2,29 +2,31 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   OnInit,
-} from '@angular/core';
-import { Product } from '../../models/product';
-import { Store } from '@ngrx/store';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { RatingModule } from 'primeng/rating';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
-import { Router, RouterLink } from '@angular/router';
-import { ClearObservable } from '../../abstract/clear-observers.abstract';
+  Output,
+} from "@angular/core";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { Router, RouterLink } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { RatingModule } from "primeng/rating";
+import { TagModule } from "primeng/tag";
+import { takeUntil } from "rxjs";
+import { ClearObservable } from "../../abstract/clear-observers.abstract";
+import { Product } from "../../models/product";
 import {
   loadProduct,
   loadProductsToCart,
-} from '../../store/product-store/actions';
-import { selectProductsInCart } from '../../store/product-store/selectors';
-import { filter, switchMap, takeUntil } from 'rxjs';
+} from "../../store/product-store/actions";
+import { selectProductsInCart } from "../../store/product-store/selectors";
 
 @Component({
-  selector: 'app-product-card-preview',
-  templateUrl: './product-card-preview.component.html',
-  styleUrls: ['./product-card-preview.component.css'],
+  selector: "app-product-card-preview",
+  templateUrl: "./product-card-preview.component.html",
+  styleUrls: ["./product-card-preview.component.css"],
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -43,6 +45,12 @@ export class ProductCardPreviewComponent
   @Input()
   productData: Product | undefined | null;
 
+  @Output() totalPrice = new EventEmitter();
+
+  getTotalPrice(value: string) {
+    this.totalPrice.emit(value);
+  }
+
   public allProducts: Product[] | undefined | null;
   public ratingGroup!: FormGroup;
   public selectedTag: string[] = [];
@@ -53,7 +61,7 @@ export class ProductCardPreviewComponent
   constructor(
     private store: Store,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
   ) {
     super();
   }
@@ -61,12 +69,12 @@ export class ProductCardPreviewComponent
   ngOnInit() {
     this.ratingGroup = new FormGroup({
       value: new FormControl(
-        Math.round(Number(this.productData?.rating?.rate))
+        Math.round(Number(this.productData?.rating?.rate)),
       ),
     });
 
-    if (typeof window !== 'undefined') {
-      this.cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (typeof window !== "undefined") {
+      this.cart = JSON.parse(localStorage.getItem("cart") || "[]");
       if (this.cart) {
         this.store.dispatch(loadProductsToCart({ productsInCart: this.cart }));
 
@@ -94,10 +102,10 @@ export class ProductCardPreviewComponent
 
     if (this.productData && this.productData.id! % 2 === 0) {
       //test
-      this.selectedTag.push('New');
-      this.selectedTag.push('Popular');
+      this.selectedTag.push("New");
+      this.selectedTag.push("Popular");
     } else {
-      this.selectedTag.push('Discount');
+      this.selectedTag.push("Discount");
     }
   }
 
@@ -109,9 +117,9 @@ export class ProductCardPreviewComponent
   };
 
   addToCart = (productID: number) => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Отримуємо існуючий масив продуктів з локального сховища або створюємо новий
-      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
       // Перевіряємо, чи є cart масивом, якщо ні, ініціалізуємо порожній масив
       if (!Array.isArray(cart)) {
@@ -122,32 +130,32 @@ export class ProductCardPreviewComponent
       cart.push(productID);
 
       // Зберігаємо оновлений масив у локальне сховище
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem("cart", JSON.stringify(cart));
 
       // Оновлюємо локальний масив продуктів у корзині
       this.productsInCart = cart;
       this.store.dispatch(
-        loadProductsToCart({ productsInCart: this.productsInCart })
+        loadProductsToCart({ productsInCart: this.productsInCart }),
       );
     }
   };
 
   removeFromCart = (productID: number) => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Отримуємо існуючий масив продуктів з локального сховища або створюємо новий
-      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
       let searchIndex = cart.findIndex((elem: number) => elem === productID);
 
       if (searchIndex !== -1) {
         cart.splice(searchIndex, 1);
         // Зберігаємо оновлений масив у локальне сховище
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem("cart", JSON.stringify(cart));
 
         // Оновлюємо локальний масив продуктів у корзині
         this.productsInCart = cart;
         this.store.dispatch(
-          loadProductsToCart({ productsInCart: this.productsInCart })
+          loadProductsToCart({ productsInCart: this.productsInCart }),
         );
       }
     }

@@ -1,41 +1,33 @@
+import { CommonModule, NgClass, NgStyle } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
-} from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
-import { JsonPipe, NgClass, NgStyle } from '@angular/common';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { ButtonModule } from 'primeng/button';
+} from "@angular/core";
 import {
-  Form,
   FormControl,
-  FormControlName,
   FormGroup,
   FormsModule,
-  MinValidator,
   ReactiveFormsModule,
   Validators,
-} from '@angular/forms';
-import { Store } from '@ngrx/store';
+} from "@angular/forms";
+import { Store } from "@ngrx/store";
+import { ButtonModule } from "primeng/button";
+import { DialogModule } from "primeng/dialog";
+import { InputNumberModule } from "primeng/inputnumber";
+import { combineLatest, takeUntil } from "rxjs";
+import { ClearObservable } from "../../abstract/clear-observers.abstract";
+import { Product } from "../../models/product";
+import { clearProductsToCart } from "../../store/product-store/actions";
 import {
   selectAllProducts,
   selectProductsInCart,
-  selectTotalPrice,
-} from '../../store/product-store/selectors';
-import { combineLatest, filter, forkJoin, takeUntil } from 'rxjs';
-import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { Product } from '../../models/product';
-import {
-  clearProductsToCart,
-  loadProductsToCart,
-  summTotalPrice,
-} from '../../store/product-store/actions';
-import { CommonModule } from '@angular/common';
+} from "../../store/product-store/selectors";
+import { ProductPrevCartComponent } from "../product-prev-cart/product-prev-cart.component";
 
 @Component({
-  selector: 'app-cart',
+  selector: "app-cart",
   standalone: true,
   imports: [
     DialogModule,
@@ -46,9 +38,10 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
+    ProductPrevCartComponent,
   ],
-  templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css'],
+  templateUrl: "./cart.component.html",
+  styleUrls: ["./cart.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent extends ClearObservable implements OnInit {
@@ -57,17 +50,22 @@ export class CartComponent extends ClearObservable implements OnInit {
   public productsInCart: Product[] = [];
   public shoppingCartQuantity: string | undefined;
   public totalPrice: number = 0;
+  public sumPrice: number | null | undefined;
   public totalPriceInCart!: FormGroup;
   private productsInCartIds: number[] | null | undefined;
   private allProducts: Product[] | null | undefined;
 
-  constructor(private store: Store, private cd: ChangeDetectorRef) {
+  constructor(
+    private store: Store,
+    private cd: ChangeDetectorRef,
+  ) {
     super();
   }
 
   ngOnInit() {
     this.totalPriceInCart = new FormGroup({
       quantity: new FormControl(1, Validators.min(1)),
+      sumPrice: new FormControl(""),
     });
 
     combineLatest([
@@ -83,7 +81,7 @@ export class CartComponent extends ClearObservable implements OnInit {
         if (this.productsInCartIds) {
           this.shoppingCartQuantity = String(this.productsInCartIds.length);
         } else {
-          this.shoppingCartQuantity = '0';
+          this.shoppingCartQuantity = "0";
         }
 
         if (this.allProducts) {
@@ -105,41 +103,20 @@ export class CartComponent extends ClearObservable implements OnInit {
       });
   }
 
-  onChange = (pPrice: number) => {
-    // let productPrice = 0;
-    // productPrice = pPrice * this.totalPriceInCart.value.quantity;
-    // this.store.dispatch(summTotalPrice({ totalPrice: Array.of(productPrice) }));
-    // console.log(productPrice);
-    // this.store
-    //   .select(selectTotalPrice)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((price) => {
-    //     console.log(price);
-    //     if (price) {
-    //       price.forEach((e) => {
-    //         this.totalPrice += e;
-    //       });
-    //     }
-    //   });
-  };
-
   showDialog = () => {
     this.visible = true;
   };
 
   clearCart = () => {
-    localStorage.setItem('cart', JSON.stringify([]));
+    localStorage.setItem("cart", JSON.stringify([]));
     this.store.dispatch(clearProductsToCart({ productsInCart: null }));
     this.cd.markForCheck;
   };
 
-  clearProductInCart = (id: number) => {
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart = cart.filter((p: number) => p !== id);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    this.store.dispatch(clearProductsToCart({ productsInCart: cart }));
-    this.cd.markForCheck;
-  };
-
   saveCart = () => {};
+
+  receiveValue = (value: number) => {
+    let productPriceSum = value;
+    console.log(productPriceSum);
+  };
 }

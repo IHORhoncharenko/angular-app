@@ -1,4 +1,5 @@
 import { Product } from '../../models/product';
+import { SortVariation } from '../../models/sorting-variants.models';
 
 export interface ProductState {
   allProducts?: Product[] | null;
@@ -8,6 +9,7 @@ export interface ProductState {
   searchedProducts?: Product[] | null;
   productsInCart?: number[] | null;
   totalPrice?: number[] | null;
+  sortingMethod?: SortVariation | null;
 }
 
 export const initialState: ProductState = {
@@ -18,4 +20,5 @@ export const initialState: ProductState = {
   searchedProducts: null,
   productsInCart: null,
   totalPrice: null,
+  sortingMethod: null,
 };

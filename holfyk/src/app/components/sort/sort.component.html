@@ -1,0 +1,11 @@
+<div class="sort">
+  <form [formGroup]="sortProducts">
+    <p-dropdown
+      (onChange)="onSubmit()"
+      formControlName="selectedSortMethod"
+      [options]="sorting"
+      optionLabel="sortingMethod"
+      placeholder="sorting by"
+    />
+  </form>
+</div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { ProductCardPreviewComponent } from './components/product-card-preview/product-card-preview.component';
 import { Product } from './models/product';
@@ -19,6 +19,7 @@ import {
 } from './store/product-store/actions';
 import { filter, takeUntil } from 'rxjs';
 import { ClearObservable } from './abstract/clear-observers.abstract';
+import { SortComponent } from './components/sort/sort.component';
 
 @Component({
   selector: 'app-root',
@@ -32,15 +33,17 @@ import { ClearObservable } from './abstract/clear-observers.abstract';
     AvatarGroupModule,
     HeaderComponent,
     BreadcrumbsComponent,
+    SortComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent extends ClearObservable {
+  public isSortShow: boolean | null | undefined;
   private cart: number[] | null | undefined;
 
-  constructor(private router: Router, private store: Store) {
+  constructor(private router: Router, private store: Store, private cd: ChangeDetectorRef) {
     super();
   }
 
@@ -55,6 +58,7 @@ export class AppComponent extends ClearObservable {
       .subscribe((e: NavigationEnd) => {
         if (!e.url.includes('category')) {
           this.store.dispatch(loadCategory({ selectedCategory: null }));
+          this.cd.markForCheck()
           console.log(
             `%c ProductState >>> selectedCategory: null`,
             `color: red; font-weight: 700`,
@@ -63,6 +67,7 @@ export class AppComponent extends ClearObservable {
         }
         if (!e.url.includes('product')) {
           this.store.dispatch(loadProduct({ selectedProduct: null }));
+           this.cd.markForCheck()
           console.log(
             `%c ProductState >>> selectedProduct: null`,
             `color: red; font-weight: 700`,
@@ -72,6 +77,7 @@ export class AppComponent extends ClearObservable {
         if (!e.url.includes('search')) {
           this.store.dispatch(loadSearchQuery({ searchQuery: null }));
           this.store.dispatch(loadSearchedProducts({ searchedProducts: null }));
+           this.cd.markForCheck()
           console.log(
             `%c ProductState >>> searchQuery: null && searchedProducts: null`,
             `color: red; font-weight: 700`,
@@ -91,5 +97,15 @@ export class AppComponent extends ClearObservable {
         );
       }
     }
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (!event.url.includes('/product/')) {
+          this.isSortShow = true;
+        } else {
+          this.isSortShow = false;
+        }
+      }
+    });
   }
 }

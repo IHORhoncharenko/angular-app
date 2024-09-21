@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Product } from '../../models/product';
+import { SortVariation } from '../../models/sorting-variants.models';
 
 export enum ProductActionType {
   Load = '[Product Component] Load',
@@ -66,4 +67,11 @@ export const clearProductsToCart = createAction(
 export const summTotalPrice = createAction(
   ProductActionType.Load,
   props<{ totalPrice: number[] | null }>()
+);
+
+export const selectedSortingMethod = createAction(
+  '[Movie] Select sorting movie',
+  props<{
+    sortingMethod: SortVariation | null;
+  }>()
 );

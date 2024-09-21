@@ -58,5 +58,11 @@ export const ProductReducer = createReducer(
       ...state,
       totalPrice: totalPrice,
     };
+  }),
+  on(storeActions.selectedSortingMethod, (state, { sortingMethod }) => {
+    return {
+      ...state,
+      sortingMethod: sortingMethod,
+    };
   })
 );
