@@ -12,15 +12,29 @@
       <span class="product-price">${{ productData.price }}</span>
       @if (productData.price && productData.id) {
         <form [formGroup]="totalPriceInCart">
-          <input
-            (change)="changeQuantity(productData.price); emitEvent()"
-            min="1"
-            formControlName="quantity"
-            type="number"
-            name="quantity"
-            id="quantity"
-          />
-          <span>{{ sumPrice | currency: "USD" }}</span>
+          <div>
+            <p-button
+              (onClick)="removeProduct()"
+              label="-"
+              aria-label="Видалити товар"
+            ></p-button>
+            <input
+              min="1"
+              formControlName="quantity"
+              type="number"
+              name="quantity"
+              id="quantity"
+            />
+            <p-button
+              (onClick)="addProduct()"
+              label="+"
+              aria-label="Додати товар"
+            ></p-button>
+          </div>
+
+          <span class="product-summ-price">{{
+            sumPrice | currency: "USD"
+          }}</span>
         </form>
       }
 

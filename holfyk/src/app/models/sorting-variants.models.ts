@@ -1,3 +1,4 @@
 export interface SortVariation {
-  sortingMethod: string;
+  label: string;
+  sortingVariant: string;
 }

@@ -5,13 +5,7 @@ import {
   Component,
   OnInit,
 } from "@angular/core";
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { ButtonModule } from "primeng/button";
 import { DialogModule } from "primeng/dialog";
@@ -50,8 +44,6 @@ export class CartComponent extends ClearObservable implements OnInit {
   public productsInCart: Product[] = [];
   public shoppingCartQuantity: string | undefined;
   public totalPrice: number = 0;
-  public sumPrice: number | null | undefined;
-  public totalPriceInCart!: FormGroup;
   private productsInCartIds: number[] | null | undefined;
   private allProducts: Product[] | null | undefined;
 
@@ -63,11 +55,6 @@ export class CartComponent extends ClearObservable implements OnInit {
   }
 
   ngOnInit() {
-    this.totalPriceInCart = new FormGroup({
-      quantity: new FormControl(1, Validators.min(1)),
-      sumPrice: new FormControl(""),
-    });
-
     combineLatest([
       this.store.select(selectProductsInCart),
       this.store.select(selectAllProducts),
@@ -114,8 +101,4 @@ export class CartComponent extends ClearObservable implements OnInit {
   };
 
   saveCart = () => {};
-
-  receiveValue = (value: number) => {
-    this.totalPrice = 0;
-  };
 }

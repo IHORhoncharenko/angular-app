@@ -1,77 +1,78 @@
-import { createAction, props } from '@ngrx/store';
-import { Product } from '../../models/product';
-import { SortVariation } from '../../models/sorting-variants.models';
+import { createAction, props } from "@ngrx/store";
+import { Product } from "../../models/product";
 
 export enum ProductActionType {
-  Load = '[Product Component] Load',
-  LoadCategory = '[Category Component] Load',
-  SearchProducts = '[Product Component] Search Product',
-  UpdateProduct = '[Product Component] Update Product',
-  CreateProduct = '[Product Component] Create Product',
-  UpdateTotal = '[Product Component] Update Total',
-  ActionFailure = '[Product API] Execute action failure',
-  ActionSuccess = '[Product API] Execute action success',
-  LoadSuccess = '[Product API] Load Success',
-  Refresh = '[Product Page] Refresh',
-  Selected = '[Product Page] Select',
-  SubmitSuccess = '[Product API] Submit Success',
+  LoadProducts = "[Products API] Load all products...",
+  LoadProductsSuccess = "[Products API] Load all products success",
+  LoadSearchProducts = "[Search Page] Load searched products",
+  LoadSelectedProduct = "[Product Page] Load selected product",
+  LoadSelectedCategory = "[Category Component] Load selectd category",
+  LoadSearchQuery = "[Other] Load searched query",
+  AddProductsToCart = "[Listing] Add products to cart",
+  RemoveProductsFromCart = "[Listing] Remove products from cart",
+  UpdateTotalPrice = "[Cart] Update total price for one product position in cart",
+  LoadSortingMethod = "[Listing] Selected sorting method in listing of products",
+  LoadSortingProducts = "[Listing] Sorting and load all products",
+  ActionFailure = "[Product API] Execute action failure",
 }
-
-export const loadAllProducts = createAction(ProductActionType.Load);
 
 export const actionFailure = createAction(
   ProductActionType.ActionFailure,
-  props<{ error: string }>()
+  props<{ error: string }>(),
 );
 
-export const actionSuccess = createAction(
-  ProductActionType.ActionSuccess,
-  props<{ msg: string }>()
+export const loadAllProducts = createAction(ProductActionType.LoadProducts);
+
+export const loadAllProductsSuccess = createAction(
+  ProductActionType.LoadProductsSuccess,
+  props<{ allProducts: Product[] | null }>(),
 );
 
 export const loadSearchedProducts = createAction(
-  ProductActionType.SearchProducts,
-  props<{ searchedProducts: Product[] | null }>()
-);
-
-export const loadAllProductsSuccess = createAction(
-  ProductActionType.LoadSuccess,
-  props<{ allProducts: Product[] | null }>()
+  ProductActionType.LoadSearchProducts,
+  props<{ searchedProducts: Product[] | null }>(),
 );
 
 export const loadProduct = createAction(
-  ProductActionType.Selected,
-  props<{ selectedProduct: Product | null }>()
+  ProductActionType.LoadSelectedProduct,
+  props<{ selectedProduct: Product | null }>(),
 );
 
 export const loadCategory = createAction(
-  ProductActionType.LoadCategory,
-  props<{ selectedCategory: string | null }>()
+  ProductActionType.LoadSelectedCategory,
+  props<{ selectedCategory: string | null }>(),
 );
 
 export const loadSearchQuery = createAction(
-  ProductActionType.Load,
-  props<{ searchQuery: string | null }>()
+  ProductActionType.LoadSearchQuery,
+  props<{ searchQuery: string | null }>(),
 );
 
 export const loadProductsToCart = createAction(
-  ProductActionType.Load,
-  props<{ productsInCart: number[] | null }>()
+  ProductActionType.AddProductsToCart,
+  props<{ productsInCart: number[] | null }>(),
 );
 
 export const clearProductsToCart = createAction(
-  ProductActionType.Load,
-  props<{ productsInCart: number[] | null }>()
+  ProductActionType.RemoveProductsFromCart,
+  props<{ productsInCart: number[] | null }>(),
 );
 
-export const summTotalPrice = createAction(
-  ProductActionType.Load,
-  props<{ totalPrice: number[] | null }>()
+export const loadSummTotalPrice = createAction(
+  ProductActionType.UpdateTotalPrice,
+  props<{ totalPrice: number[] | null }>(),
 );
 
-export const selectedSortingMethod = createAction(
-  '[Movie] Select sorting movie',
+export const loadSortingMethod = createAction(
+  ProductActionType.LoadSortingMethod,
   props<{
-    sortingMethod: SortVariation | null;
-  }>()
+    sortingMethod: string | null;
+  }>(),
+);
+
+export const loadSortingAllProducts = createAction(
+  ProductActionType.LoadSortingProducts,
+  props<{
+    sortingAllProducts: Product[] | null;
+  }>(),
 );

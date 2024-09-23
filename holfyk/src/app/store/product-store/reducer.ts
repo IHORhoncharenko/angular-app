@@ -1,6 +1,6 @@
-import { createReducer, on } from '@ngrx/store';
-import * as storeActions from './actions';
-import { initialState } from './state';
+import { createReducer, on } from "@ngrx/store";
+import * as storeActions from "./actions";
+import { initialState } from "./state";
 
 export const ProductReducer = createReducer(
   initialState,
@@ -53,16 +53,22 @@ export const ProductReducer = createReducer(
       productsInCart: productsInCart,
     };
   }),
-  on(storeActions.summTotalPrice, (state, { totalPrice }) => {
+  on(storeActions.loadSummTotalPrice, (state, { totalPrice }) => {
     return {
       ...state,
       totalPrice: totalPrice,
     };
   }),
-  on(storeActions.selectedSortingMethod, (state, { sortingMethod }) => {
+  on(storeActions.loadSortingMethod, (state, { sortingMethod }) => {
     return {
       ...state,
       sortingMethod: sortingMethod,
     };
-  })
+  }),
+  on(storeActions.loadSortingAllProducts, (state, { sortingAllProducts }) => {
+    return {
+      ...state,
+      sortingAllProducts: sortingAllProducts,
+    };
+  }),
 );

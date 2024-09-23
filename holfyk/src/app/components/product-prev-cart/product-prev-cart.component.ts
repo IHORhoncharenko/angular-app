@@ -3,10 +3,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
 } from "@angular/core";
 import {
   FormControl,
@@ -17,6 +15,8 @@ import {
 } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { ButtonModule } from "primeng/button";
+import { takeUntil } from "rxjs";
+import { ClearObservable } from "../../abstract/clear-observers.abstract";
 import { Product } from "../../models/product";
 import { clearProductsToCart } from "../../store/product-store/actions";
 
@@ -28,10 +28,12 @@ import { clearProductsToCart } from "../../store/product-store/actions";
   imports: [FormsModule, ReactiveFormsModule, ButtonModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductPrevCartComponent implements OnInit {
+export class ProductPrevCartComponent
+  extends ClearObservable
+  implements OnInit
+{
   @Input()
   productData: Product | undefined | null;
-  @Output() valueEmitter = new EventEmitter<number>();
 
   public totalPriceInCart!: FormGroup;
   public sumPrice: number | null | undefined;
@@ -39,7 +41,9 @@ export class ProductPrevCartComponent implements OnInit {
   constructor(
     private store: Store,
     private cd: ChangeDetectorRef,
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.totalPriceInCart = new FormGroup({
@@ -47,6 +51,14 @@ export class ProductPrevCartComponent implements OnInit {
     });
 
     this.sumPrice = this.productData?.price;
+
+    this.totalPriceInCart.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value.quantity && this.productData && this.productData.price) {
+          this.sumPrice = this.productData.price * value.quantity;
+        }
+      });
   }
 
   clearProductInCart = (id: number) => {
@@ -57,13 +69,16 @@ export class ProductPrevCartComponent implements OnInit {
     this.cd.markForCheck;
   };
 
-  changeQuantity = (pPrice: number) => {
-    this.sumPrice = pPrice * this.totalPriceInCart.value.quantity;
-  };
-
-  emitEvent() {
-    if (this.sumPrice) {
-      this.valueEmitter.emit(this.sumPrice);
+  removeProduct = () => {
+    let currentQuantity = this.totalPriceInCart.get("quantity")?.value;
+    if (currentQuantity > 1) {
+      this.totalPriceInCart.setValue({ quantity: currentQuantity - 1 });
+      this.cd.markForCheck();
     }
-  }
+  };
+  addProduct = () => {
+    let currentQuantity = this.totalPriceInCart.get("quantity")?.value;
+    this.totalPriceInCart.setValue({ quantity: currentQuantity + 1 });
+    this.cd.markForCheck();
+  };
 }

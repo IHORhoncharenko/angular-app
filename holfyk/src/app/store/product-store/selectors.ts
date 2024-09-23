@@ -1,34 +1,44 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ProductState } from './state';
+import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { ProductState } from "./state";
 
-export const productState = createFeatureSelector<ProductState>('productState');
+export const productState = createFeatureSelector<ProductState>("productState");
 
 export const selectAllProducts = createSelector(
   productState,
-  (state) => state.allProducts
+  (state) => state.allProducts,
 );
 
 export const selectProduct = createSelector(
   productState,
-  (state) => state.selectedProduct
+  (state) => state.selectedProduct,
 );
 
 export const selectCategory = createSelector(
   productState,
-  (state) => state.selectedCategory
+  (state) => state.selectedCategory,
 );
 
 export const selectSearchProducts = createSelector(
   productState,
-  (state) => state.searchedProducts
+  (state) => state.searchedProducts,
 );
 
 export const selectProductsInCart = createSelector(
   productState,
-  (state) => state.productsInCart
+  (state) => state.productsInCart,
 );
 
 export const selectTotalPrice = createSelector(
   productState,
-  (state) => state.totalPrice
+  (state) => state.totalPrice,
+);
+
+export const selectSortingMethod = createSelector(
+  productState,
+  (state) => state.sortingMethod,
+);
+
+export const selectSortingAllProducts = createSelector(
+  productState,
+  (state) => state.sortingAllProducts,
 );

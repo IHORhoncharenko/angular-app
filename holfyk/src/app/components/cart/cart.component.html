@@ -31,10 +31,7 @@
 >
   <div class="products-container">
     @for (product of productsInCart; track product.id) {
-      <app-product-prev-cart
-        (valueEmitter)="receiveValue($event)"
-        [productData]="product"
-      ></app-product-prev-cart>
+      <app-product-prev-cart [productData]="product"></app-product-prev-cart>
     }
   </div>
 
