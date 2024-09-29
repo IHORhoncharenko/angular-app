@@ -13,6 +13,7 @@ export enum ProductActionType {
   UpdateTotalPrice = "[Cart] Update total price for one product position in cart",
   LoadSortingMethod = "[Listing] Selected sorting method in listing of products",
   LoadSortingProducts = "[Listing] Sorting and load all products",
+  LoadSumPrice = "[Cart] Sum price with one product",
   ActionFailure = "[Product API] Execute action failure",
 }
 
@@ -74,5 +75,12 @@ export const loadSortingAllProducts = createAction(
   ProductActionType.LoadSortingProducts,
   props<{
     sortingAllProducts: Product[] | null;
+  }>(),
+);
+
+export const loadSumPrice = createAction(
+  ProductActionType.LoadSumPrice,
+  props<{
+    sumPrice: number | null;
   }>(),
 );

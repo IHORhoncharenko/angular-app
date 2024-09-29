@@ -1,15 +1,10 @@
-<div>
+<p-sidebar [(visible)]="sidebarVisible" position="right">
   <dl>
     <div>
-      <dt>ID product</dt>
-      @for (id of allProductIds; track $index) {
-      <dd>
-        <label>
-          <input type="checkbox" [value]="id" />
-          {{ id }}
-        </label>
-      </dd>
-      }
+      <dt>Color</dt>
+      <dd>red</dd>
+      <dd>blue</dd>
     </div>
   </dl>
-</div>
+</p-sidebar>
+<p-button (onClick)="sidebarVisible = true" icon="pi pi-arrow-left" />

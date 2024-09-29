@@ -10,25 +10,10 @@ import { DropdownModule } from "primeng/dropdown";
 import { MultiSelectModule } from "primeng/multiselect";
 import { RatingModule } from "primeng/rating";
 import { SelectButtonModule } from "primeng/selectbutton";
-import {
-  combineLatest,
-  distinctUntilChanged,
-  filter,
-  takeUntil,
-  tap,
-} from "rxjs";
+import { distinctUntilChanged, takeUntil } from "rxjs";
 import { ClearObservable } from "../../abstract/clear-observers.abstract";
-import { Product } from "../../models/product";
 import { SortVariation } from "../../models/sorting-variants.models";
-import {
-  loadSortingAllProducts,
-  loadSortingMethod,
-} from "../../store/product-store/actions";
-import {
-  selectAllProducts,
-  selectSortingAllProducts,
-  selectSortingMethod,
-} from "../../store/product-store/selectors";
+import { loadSortingMethod } from "../../store/product-store/actions";
 
 @Component({
   selector: "app-sort",
@@ -47,7 +32,6 @@ import {
 export class SortComponent extends ClearObservable implements OnInit {
   public sorting: SortVariation[] | undefined;
   public sortProducts!: FormGroup;
-  public allProducts: Product[] | null | undefined;
 
   constructor(
     private store: Store,
@@ -70,24 +54,6 @@ export class SortComponent extends ClearObservable implements OnInit {
       loadSortingMethod({ sortingMethod: this.sortProducts.value.sortingElem }),
     );
 
-    // Підписка на всі продукти
-    this.store
-      .select(selectAllProducts)
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((products) => products !== undefined && products !== null),
-        tap((products) => {
-          if (products) {
-            this.store.dispatch(
-              loadSortingAllProducts({
-                sortingAllProducts: products,
-              }),
-            );
-          }
-        }),
-      )
-      .subscribe();
-
     // Підписка на зміну методу сортування
     this.sortProducts.valueChanges
       .pipe(
@@ -98,60 +64,12 @@ export class SortComponent extends ClearObservable implements OnInit {
       )
       .subscribe((value) => {
         if (value.sortingElem) {
-          // this.store.dispatch(
-          //   loadSortingMethod({
-          //     sortingMethod: value.sortingElem,
-          //   }),
-          // );
-        }
-      });
-
-    // Підписка на відсортовані продукти та метод сортування
-    combineLatest([
-      this.store.select(selectSortingAllProducts),
-      this.store.select(selectSortingMethod),
-    ])
-      .pipe(
-        takeUntil(this.destroy$),
-        filter(
-          ([products, method]) =>
-            products !== undefined &&
-            products !== null &&
-            method !== undefined &&
-            method !== null,
-        ),
-      )
-      .subscribe(([products, method]) => {
-        if (products && method) {
-          if (method === "rating") {
-            console.log(products);
-            this.store.dispatch(
-              loadSortingAllProducts({
-                sortingAllProducts: [...products].sort(this.compare),
-              }),
-            );
-          } else {
-            console.log(products);
-            this.store.dispatch(
-              loadSortingAllProducts({ sortingAllProducts: products }),
-            );
-          }
-          this.cd.markForCheck(); // Примусове оновлення для ChangeDetectionStrategy.OnPush
+          this.store.dispatch(
+            loadSortingMethod({
+              sortingMethod: value.sortingElem,
+            }),
+          );
         }
       });
   }
-
-  compare = (a: Product, b: Product) => {
-    if (a.rating && b.rating && a.rating.rate && b.rating.rate) {
-      if (a.rating.rate < b.rating.rate) {
-        return 1;
-      }
-      if (a.rating.rate > b.rating.rate) {
-        return -1;
-      }
-      return 0;
-    } else {
-      return 0;
-    }
-  };
 }

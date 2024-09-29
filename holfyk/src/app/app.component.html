@@ -5,7 +5,10 @@
 <div class="main">
   <app-breadcrumbs></app-breadcrumbs>
   @if (isSortShow) {
-  <app-sort></app-sort>
+    <div class="usage">
+      <app-sort class="usage-elem"></app-sort>
+      <app-filter class="usage-elem"></app-filter>
+    </div>
   }
   <router-outlet></router-outlet>
 </div>

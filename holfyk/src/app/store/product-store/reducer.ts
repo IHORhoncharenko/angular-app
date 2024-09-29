@@ -71,4 +71,10 @@ export const ProductReducer = createReducer(
       sortingAllProducts: sortingAllProducts,
     };
   }),
+  on(storeActions.loadSumPrice, (state, { sumPrice }) => {
+    return {
+      ...state,
+      sumPrice: sumPrice,
+    };
+  }),
 );

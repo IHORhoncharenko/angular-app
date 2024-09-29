@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Product } from '../../models/product';
-import { Store } from '@ngrx/store';
-import { selectAllProducts } from '../../store/product-store/selectors';
-import { ClearObservable } from '../../abstract/clear-observers.abstract';
-import { filter, takeUntil } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { ButtonModule } from "primeng/button";
+import { SidebarModule } from "primeng/sidebar";
+import { filter, takeUntil } from "rxjs";
+import { ClearObservable } from "../../abstract/clear-observers.abstract";
+import { Product } from "../../models/product";
+import { selectAllProducts } from "../../store/product-store/selectors";
 
 @Component({
-  selector: 'app-filter',
-  templateUrl: './filter.component.html',
+  selector: "app-filter",
+  templateUrl: "./filter.component.html",
   standalone: true,
-  imports: [],
-  styleUrls: ['./filter.component.css'],
+  imports: [SidebarModule, ButtonModule],
+  styleUrls: ["./filter.component.css"],
 })
 export class FilterComponent extends ClearObservable implements OnInit {
   public allProductIds: number[] = [];
+  public sidebarVisible: boolean = false;
 
   constructor(private store: Store) {
     super();
@@ -26,8 +29,8 @@ export class FilterComponent extends ClearObservable implements OnInit {
         takeUntil(this.destroy$),
         filter(
           (products): products is Product[] =>
-            products !== undefined && products !== null
-        )
+            products !== undefined && products !== null,
+        ),
       )
       .subscribe((products) => {
         products.forEach((p: Product) => {

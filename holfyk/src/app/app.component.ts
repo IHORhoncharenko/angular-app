@@ -12,6 +12,7 @@ import { SidebarModule } from "primeng/sidebar";
 import { filter, takeUntil } from "rxjs";
 import { ClearObservable } from "./abstract/clear-observers.abstract";
 import { BreadcrumbsComponent } from "./components/breadcrumbs/breadcrumbs.component";
+import { FilterComponent } from "./components/filter/filter.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { ProductCardPreviewComponent } from "./components/product-card-preview/product-card-preview.component";
 import { SortComponent } from "./components/sort/sort.component";
@@ -37,6 +38,7 @@ import {
     HeaderComponent,
     BreadcrumbsComponent,
     SortComponent,
+    FilterComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",

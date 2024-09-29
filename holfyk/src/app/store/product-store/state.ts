@@ -10,6 +10,7 @@ export interface ProductState {
   productsInCart?: number[] | null;
   totalPrice?: number[] | null;
   sortingMethod?: string | null;
+  sumPrice?: number | null;
 }
 
 export const initialState: ProductState = {
@@ -22,4 +23,5 @@ export const initialState: ProductState = {
   productsInCart: null,
   totalPrice: null,
   sortingMethod: null,
+  sumPrice: null,
 };

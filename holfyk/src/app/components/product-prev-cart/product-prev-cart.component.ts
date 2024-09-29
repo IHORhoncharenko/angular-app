@@ -18,7 +18,10 @@ import { ButtonModule } from "primeng/button";
 import { takeUntil } from "rxjs";
 import { ClearObservable } from "../../abstract/clear-observers.abstract";
 import { Product } from "../../models/product";
-import { clearProductsToCart } from "../../store/product-store/actions";
+import {
+  clearProductsToCart,
+  loadSumPrice,
+} from "../../store/product-store/actions";
 
 @Component({
   selector: "app-product-prev-cart",
@@ -55,8 +58,12 @@ export class ProductPrevCartComponent
     this.totalPriceInCart.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
+        this.store.dispatch(loadSumPrice({ sumPrice: null }));
+
         if (value.quantity && this.productData && this.productData.price) {
           this.sumPrice = this.productData.price * value.quantity;
+
+          this.store.dispatch(loadSumPrice({ sumPrice: this.sumPrice }));
         }
       });
   }

@@ -5,15 +5,16 @@ import {
   OnInit,
 } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { concatMap, filter, takeUntil, tap } from "rxjs";
+import { combineLatest, filter, takeUntil } from "rxjs";
 import { ClearObservable } from "../../abstract/clear-observers.abstract";
 import { BreadcrumbsComponent } from "../../components/breadcrumbs/breadcrumbs.component";
 import { FilterComponent } from "../../components/filter/filter.component";
 import { ProductCardPreviewComponent } from "../../components/product-card-preview/product-card-preview.component";
 import { Product } from "../../models/product";
 import {
+  selectAllProducts,
   selectCategory,
-  selectSortingAllProducts,
+  selectSortingMethod,
 } from "../../store/product-store/selectors";
 
 @Component({
@@ -39,25 +40,53 @@ export class ProductCategoryComponent
   }
 
   ngOnInit() {
-    this.store
-      .select(selectSortingAllProducts)
+    combineLatest([
+      this.store.select(selectAllProducts),
+      this.store.select(selectSortingMethod),
+      this.store.select(selectCategory),
+    ])
       .pipe(
         takeUntil(this.destroy$),
-        filter((products) => products !== null && products !== undefined),
-        tap((products) => {
-          this.allProducts = products;
-          this.cd.markForCheck();
-        }),
-        concatMap(() => {
-          return this.store.select(selectCategory);
-        }),
         filter(
-          (selectCategory) =>
-            selectCategory !== null && selectCategory !== undefined,
+          ([products, method, category]) =>
+            products !== undefined &&
+            products !== null &&
+            method !== null &&
+            method !== undefined &&
+            category !== null &&
+            category !== undefined,
         ),
       )
-      .subscribe((selectCategory) => {
-        this.choiceCategory = selectCategory;
+      .subscribe(([products, method, category]) => {
+        this.choiceCategory = category;
+
+        if (products) {
+          switch (method) {
+            case "default":
+              this.allProducts = products;
+              break;
+            case "rating":
+              this.allProducts = [...products].sort(
+                (a: Product, b: Product) => {
+                  const aRating = a.rating?.rate ?? 0;
+                  const bRating = b.rating?.rate ?? 0;
+
+                  if (aRating > bRating) {
+                    return -1;
+                  }
+                  if (aRating < bRating) {
+                    return 1;
+                  }
+                  return 0;
+                },
+              );
+              break;
+
+            default:
+              break;
+          }
+        }
+
         this.cd.markForCheck();
       });
   }
