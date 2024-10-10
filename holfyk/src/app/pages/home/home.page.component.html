@@ -1,9 +1,8 @@
+<app-product-slider></app-product-slider>
 <ul>
   @for (product of allProducts; track product.id) {
-    <li>
-      <app-product-card-preview
-        [productData]="product"
-      ></app-product-card-preview>
-    </li>
+  <li>
+    <app-product-card-preview [productData]="product"></app-product-card-preview>
+  </li>
   }
 </ul>

@@ -1,22 +1,20 @@
 <header>
   <app-header></app-header>
 </header>
-
+<app-banner></app-banner>
 <div class="main">
   <app-breadcrumbs></app-breadcrumbs>
   @if (isSortShow) {
-    <div class="usage">
-      <app-sort class="usage-elem"></app-sort>
-      <app-filter class="usage-elem"></app-filter>
-    </div>
+  <div class="usage">
+    <app-sort class="usage-elem"></app-sort>
+    <app-filter class="usage-elem"></app-filter>
+  </div>
   }
   <router-outlet></router-outlet>
 </div>
 
 <footer>
-  <small itemprop="copyrightNotice"
-    ><span itemprop="copyrightYear">2024</span>-2025
+  <small itemprop="copyrightNotice"><span itemprop="copyrightYear">2024</span>-2025
     <span itemprop="copyrightHolder">Iryna Honcharenko</span> | holfyk.in.ua всі
-    права захищені</small
-  >
+    права захищені</small>
 </footer>

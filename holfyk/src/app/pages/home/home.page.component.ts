@@ -7,8 +7,10 @@ import {
 import { Store } from "@ngrx/store";
 import { combineLatest, filter, takeUntil } from "rxjs";
 import { ClearObservable } from "../../abstract/clear-observers.abstract";
+import { BannerComponent } from "../../components/banner/banner.component";
 import { BreadcrumbsComponent } from "../../components/breadcrumbs/breadcrumbs.component";
 import { ProductCardPreviewComponent } from "../../components/product-card-preview/product-card-preview.component";
+import { ProductSliderComponent } from "../../components/product-slider/product-slider.component";
 import { Product } from "../../models/product";
 import {
   selectAllProducts,
@@ -20,7 +22,12 @@ import {
   templateUrl: "./home.page.component.html",
   styleUrls: ["./home.page.component.css"],
   standalone: true,
-  imports: [ProductCardPreviewComponent, BreadcrumbsComponent],
+  imports: [
+    ProductCardPreviewComponent,
+    BreadcrumbsComponent,
+    BannerComponent,
+    ProductSliderComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent extends ClearObservable implements OnInit {

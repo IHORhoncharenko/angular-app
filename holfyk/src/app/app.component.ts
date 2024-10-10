@@ -11,6 +11,7 @@ import { ButtonModule } from "primeng/button";
 import { SidebarModule } from "primeng/sidebar";
 import { filter, takeUntil } from "rxjs";
 import { ClearObservable } from "./abstract/clear-observers.abstract";
+import { BannerComponent } from "./components/banner/banner.component";
 import { BreadcrumbsComponent } from "./components/breadcrumbs/breadcrumbs.component";
 import { FilterComponent } from "./components/filter/filter.component";
 import { HeaderComponent } from "./components/header/header.component";
@@ -39,6 +40,7 @@ import {
     BreadcrumbsComponent,
     SortComponent,
     FilterComponent,
+    BannerComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",

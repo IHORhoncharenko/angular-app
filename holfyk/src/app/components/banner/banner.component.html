@@ -1,0 +1,9 @@
+@if (photos) {
+  <div class="banner-container">
+    <button class="prev-button" (click)="prevSlide()">Prev</button>
+    <div class="image-container">
+      <img [src]="showImg" alt="test" />
+    </div>
+    <button class="next-button" (click)="nextSlide()">Next</button>
+  </div>
+}
